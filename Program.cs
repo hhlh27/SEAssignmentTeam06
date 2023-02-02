@@ -19,21 +19,27 @@ namespace SEAssignment
                         ManageGuestAccount();
 
                         break;
-
                     case "2":
+                        ViewAllHotels();
+
+                        break;
+                    case "3":
                         ViewHotelDetails();
                         
                         break;
+                    case "4":
+                        MakeReservation();
+                        break;
 
-                    case "3":
+                    case "5":
                         ManageCancellation();
                         
                         break;
-                    case "4":
+                    case "6":
                         ManageVouchers();
 
                         break;
-                    case "5":
+                    case "7":
                         ManageRatings();
 
                         break;
@@ -42,6 +48,18 @@ namespace SEAssignment
             }
 
 
+        }
+
+        private static void MakeReservation()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ViewAllHotels()
+
+        {
+            //implement view hotels using iterator design patter(Hannnah)
+            throw new NotImplementedException();
         }
 
         private static void ManageGuestAccount()
@@ -79,10 +97,13 @@ namespace SEAssignment
             
             Console.WriteLine("-----BookHoliStay Menu-------");
             Console.WriteLine("1. Manage Guest Account");
-            Console.WriteLine("2. View Hotel Details");
-            Console.WriteLine("3. Manage Cancellations");
-            Console.WriteLine("4. Manage Vouchers");
-            Console.WriteLine("5. Manage Ratings");
+            Console.WriteLine("2. View All Hotels");
+            Console.WriteLine("3. View Hotel Details");
+            Console.WriteLine("4. Make a reservation");
+            Console.WriteLine("5. Manage Cancellations");
+            Console.WriteLine("6. Manage Vouchers");
+            Console.WriteLine("7. Manage Ratings");
+            //check in state
             Console.WriteLine("");
         }
     }
