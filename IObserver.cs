@@ -8,6 +8,6 @@ namespace SEAssignment
 {
     public interface IObserver
     {
-        void Update(ISubject subject);
+        void Update(string ratingState);
     }
 }

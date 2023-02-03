@@ -14,6 +14,15 @@ namespace SEAssignment
         public string Review { get; set; }
         public string RatingState { get; set; }
 
+        public Rating(int starRating, string review, string ratingState) 
+        {
+            StarRating= starRating;
+            Review = review;    
+            RatingState= ratingState;
+        }
+
+        public Rating() { }
+
         //Rating methods for Observer Pattern(Caleb)
         public void RegisterObserver(IObserver observer)
         {
@@ -29,13 +38,14 @@ namespace SEAssignment
         {
             foreach (IObserver o in _observers)
             {
-                o.Update(this);
+                o.Update(RatingState);
             }
         }
 
-        public void RatingChanged()
+        public void setRatingState(string ratingState)
         {
-            this.NotifyObservers();
+            this.RatingState = ratingState;
+            NotifyObservers();
         }
     }
 }

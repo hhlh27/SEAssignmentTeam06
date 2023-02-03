@@ -6,31 +6,24 @@ using System.Threading.Tasks;
 
 namespace SEAssignment
 {
-    class SystemAdmin : IObserver, Person
-    {  
-        public SystemAdmin(string loginEm, string loginPass)
+    class SystemAdmin : Person, IObserver
+    {
+        public SystemAdmin(string loginEmail, string loginPassword, string name)
         {
-            LoginEmail = loginEm;
-            LoginPassword = loginPass;
+            LoginEmail= loginEmail;
+            LoginPassword= loginPassword;
+            Name= name;
         }
 
-        public void ViewGuestAccount();
-        public void CreateHotelAccount();
-        public void EditRoomRates();
-        public void GenerateMonthlyReports();
-        public void ViewGuestAccount();
+        public void ViewGuestAccount() { }
+        public void CreateHotelAccount() { }
+        public void EditRoomRates() { }
+        public void GenerateMonthlyReports() { }
 
         // Observer pattern method
-        public void Update(ISubject subject)
+        public void Update(string ratingState)
         {
-            if ((subject as Rating).RatingState == "StarRatingChanged")
-            {
-                Console.WriteLine("Administrator has been notified of a change made to the star rating.");
-            }
-            else if ((subject as Rating).RatingState == "ReviewChanged")
-            {
-                Console.WriteLine("Administrator has been notified of a change made to the review.");
-            }
+            Console.WriteLine(string.Format("*Notice* Hey Administrator {0}, a user has {1}.",Name, ratingState));
         }
     }
 }

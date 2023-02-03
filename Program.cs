@@ -78,20 +78,20 @@ namespace SEAssignment
             //implement Ratings use case (Hannah)
             Console.WriteLine("Ratings");
 
-            // Testing observer pattern (Caleb)
             var rating = new Rating();
-            var sysAdmin = new SystemAdmin("abc", "123");
+            var sysAdmin = new SystemAdmin("abc@gmail.com", "123", "John");
             rating.RegisterObserver(sysAdmin);
 
+            // Testing observer pattern (Caleb)
             Console.WriteLine("Rate your stay out of 5 stars: ");
-            rating.StarRating = Console.ReadLine();
-            rating.RatingState = "StarRatingChanged";
-            rating.RatingChanged();
+            var userRating = Convert.ToInt32(Console.ReadLine());
+            rating.StarRating = userRating;
+            rating.setRatingState("left a rating");
 
             Console.WriteLine("Leave a short review: ");
-            rating.Review = Console.ReadLine();
-            rating.Review = "ReviewChanged";
-            rating.RatingChanged();
+            var userReview = Console.ReadLine();
+            rating.Review = userReview;
+            rating.setRatingState("left a review");
         }
 
         private static void manageVouchers()
