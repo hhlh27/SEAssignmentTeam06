@@ -24,7 +24,7 @@ namespace SEAssignment
 
                         break;
                     case "2":
-                        viewAllHotels(hotelCollection);
+                        viewAllHotels();
 
                         break;
                     case "3":
@@ -59,7 +59,7 @@ namespace SEAssignment
             throw new NotImplementedException();
         }
 
-        private static void viewAllHotels(HotelCollection hc)
+        private static void viewAllHotels()
 
         {
             //implement view hotels using iterator design patter(Hannnah)
