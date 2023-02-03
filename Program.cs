@@ -5,42 +5,46 @@ namespace SEAssignment
 {
     public class Program
     {
+
+
+        // Wait for user
         public static void Main(string[] args)
         {
+           
             while (true)
             {
                 displayMenu();
                 Console.Write("Enter an option: ");
-                string input= Console.ReadLine();
+                string input = Console.ReadLine();
                 switch (input)
                 {
                     // Add different cases and print statements depending on the user's input
                     case "1":
-                        ManageGuestAccount();
+                        manageGuestAccount();
 
                         break;
                     case "2":
-                        ViewAllHotels();
+                        viewAllHotels(hotelCollection);
 
                         break;
                     case "3":
-                        ViewHotelDetails();
-                        
+                        viewHotelDetails();
+
                         break;
                     case "4":
-                        MakeReservation();
+                        makeReservation();
                         break;
 
                     case "5":
-                        ManageCancellation();
-                        
+                        cancelReservation();
+
                         break;
                     case "6":
-                        ManageVouchers();
+                        manageVouchers();
 
                         break;
                     case "7":
-                        ManageRatings();
+                        rateHotel();
 
                         break;
                 }
@@ -50,43 +54,44 @@ namespace SEAssignment
 
         }
 
-        private static void MakeReservation()
+        private static void makeReservation()
         {
             throw new NotImplementedException();
         }
 
-        private static void ViewAllHotels()
+        private static void viewAllHotels(HotelCollection hc)
 
         {
             //implement view hotels using iterator design patter(Hannnah)
-            throw new NotImplementedException();
+           
+
         }
 
-        private static void ManageGuestAccount()
+        private static void manageGuestAccount()
         {
             //implement Guest Account use case(Juliana)
             Console.WriteLine("Guest Account");
         }
 
-        private static void ManageRatings()
+        private static void rateHotel()
         {
             //implement Ratings use case (Hannah)
             Console.WriteLine("Ratings");
         }
 
-        private static void ManageVouchers()
+        private static void manageVouchers()
         {
             //implement vouchers use case (Lay How)
             throw new NotImplementedException();
         }
 
-        private static void ManageCancellation()
+        private static void cancelReservation()
         {
             //implement cancellation use case (Caleb)
             throw new NotImplementedException();
         }
 
-        private static void ViewHotelDetails()
+        private static void viewHotelDetails()
         {
             //implement hotel details use case (Xuan Qing)
             throw new NotImplementedException();
@@ -94,15 +99,15 @@ namespace SEAssignment
 
         private static void displayMenu()
         {
-            
+
             Console.WriteLine("-----BookHoliStay Menu-------");
             Console.WriteLine("1. Manage Guest Account");
             Console.WriteLine("2. View All Hotels");
             Console.WriteLine("3. View Hotel Details");
             Console.WriteLine("4. Make a reservation");
-            Console.WriteLine("5. Manage Cancellations");
+            Console.WriteLine("5. Cancel a Reservation");
             Console.WriteLine("6. Manage Vouchers");
-            Console.WriteLine("7. Manage Ratings");
+            Console.WriteLine("7. Rate Hotel");
             //check in state
             Console.WriteLine("");
         }
