@@ -1,6 +1,6 @@
 ﻿using SEAssignment;
 using System;
-using System.Collections.Generic;
+using System.Collections.Generic; 
 namespace SEAssignment
 {
     public class Program
@@ -77,6 +77,21 @@ namespace SEAssignment
         {
             //implement Ratings use case (Hannah)
             Console.WriteLine("Ratings");
+
+            // Testing observer pattern (Caleb)
+            var rating = new Rating();
+            var sysAdmin = new SystemAdmin("abc", "123");
+            rating.RegisterObserver(sysAdmin);
+
+            Console.WriteLine("Rate your stay out of 5 stars: ");
+            rating.StarRating = Console.ReadLine();
+            rating.RatingState = "StarRatingChanged";
+            rating.RatingChanged();
+
+            Console.WriteLine("Leave a short review: ");
+            rating.Review = Console.ReadLine();
+            rating.Review = "ReviewChanged";
+            rating.RatingChanged();
         }
 
         private static void manageVouchers()
