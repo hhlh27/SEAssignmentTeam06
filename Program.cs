@@ -131,7 +131,11 @@ namespace SEAssignment
                         guest.Reservation.setReservationStatus("Cancelled");
                         Console.WriteLine("Your reservation has been cancelled!");
                         viewReservation(guest);
-                    }               
+                    }
+                    else
+                    {
+                        Console.WriteLine("Sorry, your reservation cannot be cancelled as the check-in date is less than 2 days away.");
+                    }
                 }
             }
         }
