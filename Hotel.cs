@@ -15,7 +15,7 @@ namespace SEAssignment
         public string HotelType { get; set; }
         public bool IsVouchersAllowed { get; set; }
         public int ReviewScore { get; set; }
-
+        private List<Rating> ratingsList;
         public Hotel(int id, string n, string l, string ht, bool iv, int r)
         {
             HotelId = id;
@@ -25,6 +25,12 @@ namespace SEAssignment
             IsVouchersAllowed = iv;
             ReviewScore = r;
         }
+        public void addRating(Rating r)
+        {
+
+            ratingsList.Add(r);
+        }
+
 
     }
 }
