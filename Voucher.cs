@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SEAssignment
 {
-    class Voucher
+    public class Voucher
     {
         public int VoucherId { get; set; }
         public string VoucherDiscount { get; set; }
