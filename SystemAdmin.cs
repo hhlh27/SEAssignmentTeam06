@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SEAssignment
 {
-    public class SystemAdmin : Person, IObserver<Rating>
+    public class SystemAdmin : Person, IObserver
     {
         public void ViewGuestAccount() { }
         public void CreateHotelAccount() { }
@@ -14,9 +14,9 @@ namespace SEAssignment
         public void GenerateMonthlyReports() { }
 
         // Observer pattern method
-        public void Update(Rating ratingData)
+        public void Update(Rating rating)
         {
-            Console.WriteLine(string.Format("*Administrator Notice* Hey {0}, a user has {1}.",Name, ratingData.RatingState));
+            Console.WriteLine(string.Format("*Administrator Notice* Hey {0}, a user has {1}.",Name, rating.RatingState));
         }
     }
 }

@@ -7,31 +7,30 @@ using System.Threading.Tasks;
 namespace SEAssignment
 {
     public class Reservation
-    {
+    {  
         public int ReservationId { get; set; }
         public int GuestId { get; set; }
         public Room Room { get; set; }
         public DateTime CheckInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
         public string ReservationStatus { get; set; }
-        public bool IsFullyPaid { get; set; }
-        public DateTime DatePaid { get; set; }
-        public double AmountDue
+        public DateTime DateCancelled
         {
-            get 
-            { 
-                if (IsFullyPaid)
+            get
+            {
+                if (ReservationStatus == "Cancelled")
                 {
-                    return 0.00;
+                    return DateTime.Now;
                 }
                 else
                 {
-                    return Room.Cost * (CheckOutDate - CheckInDate).TotalDays;
-                }                
+                    // If transaction success status is false, date paid is set to "01/01/0001 00:00:00"
+                    return new DateTime();
+                }
             }
         }
 
-        public Reservation(int reservationId, int guestId, Room room, DateTime checkInDate, DateTime checkOutDate, string reservationStatus, bool isFullyPaid, DateTime datePaid)
+        public Reservation(int reservationId, int guestId, Room room, DateTime checkInDate, DateTime checkOutDate, string reservationStatus)
         {
             ReservationId = reservationId;
             GuestId = guestId;
@@ -39,8 +38,6 @@ namespace SEAssignment
             CheckInDate = checkInDate;
             CheckOutDate = checkOutDate;
             ReservationStatus = reservationStatus;
-            IsFullyPaid = isFullyPaid;
-            DatePaid = datePaid;
         }
 
 

@@ -21,6 +21,7 @@ namespace SEAssignment
         public Room(int roomId, Hotel hotel, string roomType, string bedType, bool isBreakfastServed, int maxGuest, double cost)
         {
             RoomId = roomId;
+            Hotel = hotel;
             RoomType = roomType;
             BedType = bedType;
             IsBreakfastServed = isBreakfastServed;

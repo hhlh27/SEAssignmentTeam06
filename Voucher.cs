@@ -8,10 +8,10 @@ namespace SEAssignment
 {
     public class Voucher
     {
-        public int VoucherId { get; set; }
+        public string VoucherId { get; set; }
         public string VoucherDiscount { get; set; }
 
-        public Voucher(int voucherId, string voucherDiscount)
+        public Voucher(string voucherId, string voucherDiscount)
         {
             VoucherId = voucherId;
             VoucherDiscount = voucherDiscount;

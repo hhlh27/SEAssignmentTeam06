@@ -106,21 +106,18 @@ namespace SEAssignment
             Console.Write("Enter your feedback:  ");
             string feedback = Console.ReadLine();
             string ratingState = "submitted a review";
-            //This is our Observable also known as publisher that notifies about change
-            var ratingObservable = new Observable<Rating>();
             // Admin that observes rating
             var sysAdmin = new SystemAdmin();
             sysAdmin.LoginEmail = "abc@gmail.com";
             sysAdmin.LoginPassword = "123";
             sysAdmin.Name = "John";
             // Regiser observer
-            ratingObservable.Register(sysAdmin);
-            Rating r = new Rating(starRating, feedback, ratingState);
-            // Setting subject as newly created rating object
-            ratingObservable.Subject = r;
+            Rating r = new Rating(starRating, feedback);
+            r.RegisterObserver(sysAdmin);
+            r.RatingState = ratingState;
             h.addRating(r);
 
-            Console.WriteLine("Rating submitted successfully ");
+            Console.WriteLine("Rating submitted successfully.\n");
         }
 
         private static void notifySystemAdmin(Rating r)
@@ -142,10 +139,15 @@ namespace SEAssignment
         {
             // Test objects
             Guest guest = new Guest();
-            guest.AccountBalance = 0;
             Hotel hotel = new Hotel(1, "Fullteron", "1 Fullerton Square, Singapore 049178", "Luxury hotel", true, 4);       
             Room room = new Room(1, hotel, "Deluxe", "Queen", true, 2, 150.00);
-            guest.Reservation = new Reservation(1,1, room, DateTime.Now.AddDays(3),DateTime.Now.AddDays(4),"Confirmed",false,DateTime.Now);
+            guest.Reservation = new Reservation(1, 1, room, DateTime.Now.AddDays(3),DateTime.Now.AddDays(4),"Confirmed");
+            ReservationPayment reservationPayment = new ReservationPayment();
+            reservationPayment.Reservation = guest.Reservation;
+            reservationPayment.Guest = guest;
+            reservationPayment.VoucherUsed = new Voucher("v12345", "15%");
+            reservationPayment.TransactionSuccessStatus = false;
+
             //implement cancellation use case (Caleb)
             if (guest.Reservation == null)
             {
@@ -153,7 +155,7 @@ namespace SEAssignment
             }
             else
             {              
-                viewReservation(guest);
+                viewReservation(guest, reservationPayment);
                 Console.Write("Would you like to cancel this reservation? (y/n): ");
                 var userInput = Console.ReadLine();
                 if (userInput == "y")
@@ -161,12 +163,25 @@ namespace SEAssignment
                     if ((guest.Reservation.CheckInDate - DateTime.Now).TotalDays >= 2)
                     {
                         guest.Reservation.setReservationStatus("Cancelled");
-                        Console.WriteLine("\nYour reservation has been cancelled!");
-                        viewReservation(guest);
+                        Console.WriteLine("\nYour reservation has been cancelled!\n");
+
+                        if (reservationPayment.TransactionSuccessStatus)
+                        {
+                            guest.AccountBalance += reservationPayment.PaymentAmt;
+                            Console.WriteLine("${0} has been credited back to your account!", Math.Round(reservationPayment.PaymentAmt, 2));
+                            Console.WriteLine("Your new account balance: ${0}\n", Math.Round(guest.AccountBalance, 2));
+                            
+                        }
+                        if (reservationPayment.VoucherUsed != null)
+                        {
+                            guest.AddVoucher(reservationPayment.VoucherUsed);
+                            Console.WriteLine("Your voucher {0} with a discount of {1} has been stored back in your account.\n", reservationPayment.VoucherUsed.VoucherId, reservationPayment.VoucherUsed.VoucherDiscount);
+                        }
+                        viewReservation(guest, reservationPayment);
                     }
                     else
                     {
-                        Console.WriteLine("Sorry, your reservation cannot be cancelled as the check-in date is less than 2 days away.");
+                        Console.WriteLine("Sorry, your reservation cannot be cancelled as the check-in date is less than 2 days away.\n");
                     }
                 }
             }
@@ -194,7 +209,7 @@ namespace SEAssignment
             Console.WriteLine("");
         }
 
-        private static void viewReservation(Guest guest)
+        private static void viewReservation(Guest guest, ReservationPayment reservationPayment)
         {
             Console.WriteLine("----- Your reservation -----");
             Console.WriteLine("Hotel name: " + guest.Reservation.Room.Hotel.HotelName);
@@ -204,14 +219,21 @@ namespace SEAssignment
             Console.WriteLine("Bed type: " + guest.Reservation.Room.BedType);
             Console.WriteLine("Check-in date: " + guest.Reservation.CheckInDate);
             Console.WriteLine("Check-out date: " + guest.Reservation.CheckOutDate);
-            if (guest.Reservation.IsFullyPaid == true)
+            if (reservationPayment.TransactionSuccessStatus == true)
             {
-                Console.WriteLine("Amount due: {0} (Fully paid on {1})", guest.Reservation.AmountDue, guest.Reservation.DatePaid);
-            }
+                if (guest.Reservation.ReservationStatus == "Cancelled")
+                {
+                    Console.WriteLine("Amount due: ${0} (Refunded ${1} on {2})", Math.Round(reservationPayment.PaymentDue, 2), Math.Round(reservationPayment.PaymentAmt, 2), guest.Reservation.DateCancelled);
+                }
+                else
+                {
+                    Console.WriteLine("Amount due: ${0} (Fully paid ${1} on {2})", Math.Round(reservationPayment.PaymentDue, 2), Math.Round(reservationPayment.PaymentAmt, 2), reservationPayment.DatePaid);
+                }
+            }              
             else
             {
 
-                Console.WriteLine("Amount due: {0} (Not paid)", Math.Round(guest.Reservation.AmountDue, 2).ToString("0.00"));
+                Console.WriteLine("Amount due: ${0} (Not paid)", Math.Round(reservationPayment.PaymentDue, 2));
             }
             Console.WriteLine("Reservation status: {0}\n", guest.Reservation.ReservationStatus);
         }
