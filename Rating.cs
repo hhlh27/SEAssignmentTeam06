@@ -47,5 +47,9 @@ namespace SEAssignment
             this.RatingState = ratingState;
             NotifyObservers();
         }
+
+        public string GetRating() { }
+        public string GetReview() { }
+        public bool RatingChanged() { }
     }
 }
