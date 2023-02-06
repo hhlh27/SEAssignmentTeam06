@@ -48,8 +48,7 @@ namespace SEAssignment
             NotifyObservers();
         }
 
-        public string GetRating() { }
-        public string GetReview() { }
-        public bool RatingChanged() { }
+        // public string GetRating() { }
+        // public string GetReview() { }
     }
 }

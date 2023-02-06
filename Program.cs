@@ -1,6 +1,9 @@
 ﻿using SEAssignment;
 using System;
-using System.Collections.Generic; 
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Text;
+
 namespace SEAssignment
 {
     public class Program
@@ -79,7 +82,10 @@ namespace SEAssignment
             Console.WriteLine("Ratings");
 
             var rating = new Rating();
-            var sysAdmin = new SystemAdmin("abc@gmail.com", "123", "John");
+            var sysAdmin = new SystemAdmin();
+            sysAdmin.Name = "John";
+            sysAdmin.LoginEmail = "abc@gmail.com";
+            sysAdmin.LoginPassword = "123";
             rating.RegisterObserver(sysAdmin);
 
             // Testing observer pattern (Caleb)
@@ -102,8 +108,32 @@ namespace SEAssignment
 
         private static void cancelReservation()
         {
+            // Test objects
+            Guest guest = new Guest();
+            guest.AccountBalance = 0;
+            Hotel hotel = new Hotel(1, "Fullteron", "1 Fullerton Square, Singapore 049178", "Luxury hotel", true, 4);
+            Room room = new Room(1, hotel, "Deluxe", "Queen", true, 2, 150.00);
+            guest.Reservation = new Reservation(1,1, room, DateTime.Now.AddDays(3),DateTime.Now.AddDays(4),"Confirmed",false,DateTime.Now);
             //implement cancellation use case (Caleb)
-            throw new NotImplementedException();
+            if (guest.Reservation == null)
+            {
+                Console.WriteLine("You have not made a reservation.\n");
+            }
+            else
+            {              
+                viewReservation(guest);
+                Console.Write("Would you like to cancel this reservation? (y/n): ");
+                var userInput = Console.ReadLine();
+                if (userInput == "y")
+                {
+                    if ((guest.Reservation.CheckInDate - DateTime.Now).TotalDays >= 2)
+                    {
+                        guest.Reservation.setReservationStatus("Cancelled");
+                        Console.WriteLine("Your reservation has been cancelled!");
+                        viewReservation(guest);
+                    }               
+                }
+            }
         }
 
         private static void viewHotelDetails()
@@ -125,6 +155,28 @@ namespace SEAssignment
             Console.WriteLine("7. Rate Hotel");
             //check in state
             Console.WriteLine("");
+        }
+
+        private static void viewReservation(Guest guest)
+        {
+            Console.WriteLine("----- Your reservation -----");
+            Console.WriteLine("Hotel name: " + guest.Reservation.Room.Hotel.HotelName);
+            Console.WriteLine("Hotel location: " + guest.Reservation.Room.Hotel.Location);
+            Console.WriteLine("Hotel type: " + guest.Reservation.Room.Hotel.HotelType);
+            Console.WriteLine("Room type: " + guest.Reservation.Room.RoomType);
+            Console.WriteLine("Bed type: " + guest.Reservation.Room.BedType);
+            Console.WriteLine("Check-in date: " + guest.Reservation.CheckInDate);
+            Console.WriteLine("Check-out date: " + guest.Reservation.CheckOutDate);
+            if (guest.Reservation.IsFullyPaid == true)
+            {
+                Console.WriteLine("Amount due: {0} (Fully paid on {1})", guest.Reservation.AmountDue, guest.Reservation.DatePaid);
+            }
+            else
+            {
+
+                Console.WriteLine("Amount due: {0} (Not paid)", Math.Round(guest.Reservation.AmountDue, 2).ToString("0.00"));
+            }
+            Console.WriteLine("Reservation status: {0}\n", guest.Reservation.ReservationStatus);
         }
     }
 }

@@ -8,13 +8,6 @@ namespace SEAssignment
 {
     class SystemAdmin : Person, IObserver
     {
-        public SystemAdmin(string loginEmail, string loginPassword, string name)
-        {
-            LoginEmail= loginEmail;
-            LoginPassword= loginPassword;
-            Name= name;
-        }
-
         public void ViewGuestAccount() { }
         public void CreateHotelAccount() { }
         public void EditRoomRates() { }
