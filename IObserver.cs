@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SEAssignment
 {
-    public interface IObserver
+    public interface IObserver<T>
     {
-        void Update(string ratingState);
+        void Update(T ratingData);
     }
 }

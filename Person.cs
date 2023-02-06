@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SEAssignment
 {
-    class Person
+    public class Person
     {
         public string LoginEmail { get; set; }
         public string LoginPassword { get; set; }

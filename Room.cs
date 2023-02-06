@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SEAssignment
 {
-    class Room
+    public class Room
     {
         public int RoomId { get; set; }
         public Hotel Hotel { get; set; }
@@ -16,10 +16,11 @@ namespace SEAssignment
         public int MaxNumGuests { get; set; }
         public double Cost { get; set; }
 
+        private List<Reservation> reservationsList = new List<Reservation>();
+
         public Room(int roomId, Hotel hotel, string roomType, string bedType, bool isBreakfastServed, int maxGuest, double cost)
         {
             RoomId = roomId;
-            Hotel = hotel;
             RoomType = roomType;
             BedType = bedType;
             IsBreakfastServed = isBreakfastServed;

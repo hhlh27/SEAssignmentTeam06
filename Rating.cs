@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace SEAssignment
 {
-    public class Rating : ISubject
+    public class Rating
     {
-        private List<IObserver> _observers = new List<IObserver>();
         public int StarRating { get; set; }
         public string Review { get; set; }
         public string RatingState { get; set; }
@@ -22,31 +21,6 @@ namespace SEAssignment
         }
 
         public Rating() { }
-
-        //Rating methods for Observer Pattern(Caleb)
-        public void RegisterObserver(IObserver observer)
-        {
-            this._observers.Add(observer);
-        }
-
-        public void RemoveObserver(IObserver observer)
-        {
-            this._observers.Remove(observer);
-        }
-
-        public void NotifyObservers()
-        {
-            foreach (IObserver o in _observers)
-            {
-                o.Update(RatingState);
-            }
-        }
-
-        public void setRatingState(string ratingState)
-        {
-            this.RatingState = ratingState;
-            NotifyObservers();
-        }
 
         // public string GetRating() { }
         // public string GetReview() { }

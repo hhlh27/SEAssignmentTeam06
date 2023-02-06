@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SEAssignment
 {
-    class HotelAdmin : Person
+    public class HotelAdmin : Person
     {
         public void GenerateReservationList(string hotelId) { }
         public void ViewMonthlyReports(string hotelId) { }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SEAssignment
 {
-    class Cancellation
+    public class Cancellation
     {
         public string CancellationId { get; set; }
         public DateTime CancellationDate { get; set; }

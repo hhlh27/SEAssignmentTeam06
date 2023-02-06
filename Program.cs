@@ -1,5 +1,6 @@
 ﻿using SEAssignment;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -104,33 +105,31 @@ namespace SEAssignment
             int starRating = Int32.Parse(Console.ReadLine());
             Console.Write("Enter your feedback:  ");
             string feedback = Console.ReadLine();
-            string ratingState = "Review Submitted";
-            Rating r = new Rating(starRating, feedback,ratingState);
+            string ratingState = "submitted a review";
+            //This is our Observable also known as publisher that notifies about change
+            var ratingObservable = new Observable<Rating>();
+            // Admin that observes rating
+            var sysAdmin = new SystemAdmin();
+            sysAdmin.LoginEmail = "abc@gmail.com";
+            sysAdmin.LoginPassword = "123";
+            sysAdmin.Name = "John";
+            // Regiser observer
+            ratingObservable.Register(sysAdmin);
+            Rating r = new Rating(starRating, feedback, ratingState);
+            // Setting subject as newly created rating object
+            ratingObservable.Subject = r;
             h.addRating(r);
+
             Console.WriteLine("Rating submitted successfully ");
-
-            notifySystemAdmin(r);
-
-            //Console.WriteLine("Ratings");
-
-            //var rating = new Rating();
-            //var sysAdmin = new SystemAdmin("abc@gmail.com", "123", "John");
-            //rating.RegisterObserver(sysAdmin);
-
-            var rating = new Rating();
-            var sysAdmin = new SystemAdmin("abc@gmail.com", "123", "John");
-            rating.RegisterObserver(sysAdmin);
-
-            //Console.WriteLine("Leave a short review: ");
-            //var userReview = Console.ReadLine();
-            //rating.Review = userReview;
-            //rating.setRatingState("left a review");
         }
 
         private static void notifySystemAdmin(Rating r)
         {
-            var sysAdmin = new SystemAdmin("abc@gmail.com", "123", "John");
-            r.RegisterObserver(sysAdmin);
+            var sysAdmin = new SystemAdmin();
+            sysAdmin.LoginEmail = "abc@gmail.com";
+            sysAdmin.LoginPassword = "123";
+            sysAdmin.Name = "John";
+            //r.RegisterObserver(sysAdmin);
         }
 
         private static void manageVouchers()
@@ -144,7 +143,7 @@ namespace SEAssignment
             // Test objects
             Guest guest = new Guest();
             guest.AccountBalance = 0;
-            Hotel hotel = new Hotel(1, "Fullteron", "1 Fullerton Square, Singapore 049178", "Luxury hotel", true, 4);
+            Hotel hotel = new Hotel(1, "Fullteron", "1 Fullerton Square, Singapore 049178", "Luxury hotel", true, 4);       
             Room room = new Room(1, hotel, "Deluxe", "Queen", true, 2, 150.00);
             guest.Reservation = new Reservation(1,1, room, DateTime.Now.AddDays(3),DateTime.Now.AddDays(4),"Confirmed",false,DateTime.Now);
             //implement cancellation use case (Caleb)
@@ -162,7 +161,7 @@ namespace SEAssignment
                     if ((guest.Reservation.CheckInDate - DateTime.Now).TotalDays >= 2)
                     {
                         guest.Reservation.setReservationStatus("Cancelled");
-                        Console.WriteLine("Your reservation has been cancelled!");
+                        Console.WriteLine("\nYour reservation has been cancelled!");
                         viewReservation(guest);
                     }
                     else
