@@ -22,21 +22,36 @@ namespace SEAssignment
         // The Context allows changing the State object at runtime.
         public void TransitionTo(State state)
         {
-            Console.WriteLine($"Reservation: Transition to {state.GetType().Name}.");
+            //Console.WriteLine($"Reservation: Transition to {state.GetType().Name}.");
             this._state = state;
             this._state.SetContext(this);
         }
 
         // The Context delegates part of its behavior to the current State
         // object.
-        public void Request1()
+        public string Request1(Reservation reservation)
         {
-            this._state.Handle1();
+            return this._state.Handle1(reservation);
         }
 
-        public void Request2()
+        public string Request2(Reservation reservation)
         {
-            this._state.Handle2();
+            return this._state.Handle2(reservation);
+        }
+
+        public string Request3(Reservation reservation)
+        {
+            return this._state.Handle3(reservation);
+        }
+
+        public string Request4(Reservation reservation)
+        {
+            return this._state.Handle4(reservation);
+        }
+
+        public string Request5(Reservation reservation)
+        {
+            return this._state.Handle5(reservation);
         }
     }
 
@@ -53,36 +68,187 @@ namespace SEAssignment
             this._context = context;
         }
 
-        public abstract void Handle1();
+        public abstract string Handle1(Reservation reservation);
 
-        public abstract void Handle2();
+        public abstract string Handle2(Reservation reservation);
+
+        public abstract string Handle3(Reservation reservation);
+
+        public abstract string Handle4(Reservation reservation);
+
+        public abstract string Handle5(Reservation reservation);
     }
 
     // Concrete States implement various behaviors, associated with a state of
     // the Context.
     class Submitted : State
     {
-        public override void Handle1()
+        public override string Handle1(Reservation reservation)
         {
-            this._context.TransitionTo(new Confirmed());
+            //implementation
+            return "Submitted";
         }
 
-        public override void Handle2()
+        public override string Handle2(Reservation reservation)
         {
-            Console.WriteLine("ConcreteStateA handles request2.");
+            if (reservation.ReservationPayment != null)
+            {
+                this._context.TransitionTo(new Confirmed());
+                return "Confirmed";
+            }
+
+            return "";
+        }
+
+        public override string Handle3(Reservation reservation)
+        {
+            if (reservation.Cancellation != null)
+            {
+                this._context.TransitionTo(new Cancelled());
+                return "Cancelled";
+            }
+
+            return "";
+        }
+
+        public override string Handle4(Reservation reservation)
+        {
+            this._context.TransitionTo(new Fulfilled());
+            return "Fulfilled";
+        }
+
+        public override string Handle5(Reservation reservation)
+        {
+            this._context.TransitionTo(new NoShow());
+            return "No Show";
         }
     }
 
     class Confirmed : State
     {
-        public override void Handle1()
+        public override string Handle1(Reservation reservation)
         {
-            Console.Write("ConcreteStateB handles request1.");
+            return "";
         }
 
-        public override void Handle2()
+        public override string Handle2(Reservation reservation)
         {
-            this._context.TransitionTo(new Submitted());
+            //implementation
+            return "";
+        }
+
+        public override string Handle3(Reservation reservation)
+        {
+            //implementation
+            return "";
+        }
+
+        public override string Handle4(Reservation reservation)
+        {
+            //implementation
+            return "";
+        }
+
+        public override string Handle5(Reservation reservation)
+        {
+            //implementation
+            return "";
+        }
+    }
+
+    class Cancelled : State
+    {
+        public override string Handle1(Reservation reservation)
+        {
+            return "";
+        }
+
+        public override string Handle2(Reservation reservation)
+        {
+            //implementation
+            return "";
+        }
+
+        public override string Handle3(Reservation reservation)
+        {
+            //implementation
+            return "";
+        }
+
+        public override string Handle4(Reservation reservation)
+        {
+            //implementation
+            return "";
+        }
+
+        public override string Handle5(Reservation reservation)
+        {
+            //implementation
+            return "";
+        }
+    }
+
+    class Fulfilled : State
+    {
+        public override string Handle1(Reservation reservation)
+        {
+            return "";
+        }
+
+        public override string Handle2(Reservation reservation)
+        {
+            //implementation
+            return "";
+        }
+
+        public override string Handle3(Reservation reservation)
+        {
+            //implementation
+            return "";
+        }
+
+        public override string Handle4(Reservation reservation)
+        {
+            //implementation
+            return "";
+        }
+
+        public override string Handle5(Reservation reservation)
+        {
+            //implementation
+            return "";
+        }
+    }
+
+    class NoShow : State
+    {
+        public override string Handle1(Reservation reservation)
+        {
+            return "";
+        }
+
+        public override string Handle2(Reservation reservation)
+        {
+            //implementation
+            return "";
+        }
+
+        public override string Handle3(Reservation reservation)
+        {
+            //implementation
+            return "";
+        }
+
+        public override string Handle4(Reservation reservation)
+        {
+            //implementation
+            return "";
+        }
+
+        public override string Handle5(Reservation reservation)
+        {
+            //implementation
+            return "";
         }
     }
 }

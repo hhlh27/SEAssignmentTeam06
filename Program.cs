@@ -45,9 +45,17 @@ namespace SEAssignment
                         break;
                     case "4":
                         // The client code.
+                        Hotel hotel = new Hotel(1, "name", "l", "ht", true, 9);
+                        Room rr = new Room(1, hotel, "abc", "abc", true, 6, 9300.03, "stat");
+                        var date1 = new DateTime(2023, 3, 1, 8, 30, 52);
+                        var date2 = new DateTime(2023, 3, 4, 8, 30, 52);
+                        Reservation r = new Reservation(1, 1, rr, date1, date2, "empty", null, null);
+
                         var context = new Context(new Submitted());
-                        context.Request1();
-                        context.Request2();
+                        string status = context.Request1(r);
+
+                        r.setReservationStatus(status);
+                        Console.WriteLine(r.ReservationStatus);
                         //makeReservation();
                         break;
 
