@@ -140,13 +140,13 @@ namespace SEAssignment
             // Test objects
             Guest guest = new Guest();
             Hotel hotel = new Hotel(1, "Fullteron", "1 Fullerton Square, Singapore 049178", "Luxury hotel", true, 4);       
-            Room room = new Room(1, hotel, "Deluxe", "Queen", true, 2, 150.00);
+            Room room = new Room(1, hotel, "Deluxe", "Queen", true, 2, 150.00, "Reserved");
             guest.Reservation = new Reservation(1, 1, room, DateTime.Now.AddDays(3),DateTime.Now.AddDays(4),"Confirmed");
             ReservationPayment reservationPayment = new ReservationPayment();
             reservationPayment.Reservation = guest.Reservation;
             reservationPayment.Guest = guest;
             reservationPayment.VoucherUsed = new Voucher("v12345", "15%");
-            reservationPayment.TransactionSuccessStatus = false;
+            reservationPayment.TransactionSuccessStatus = true;
 
             //implement cancellation use case (Caleb)
             if (guest.Reservation == null)
@@ -160,11 +160,9 @@ namespace SEAssignment
                 var userInput = Console.ReadLine();
                 if (userInput == "y")
                 {
+                    Console.WriteLine();
                     if ((guest.Reservation.CheckInDate - DateTime.Now).TotalDays >= 2)
                     {
-                        guest.Reservation.setReservationStatus("Cancelled");
-                        Console.WriteLine("\nYour reservation has been cancelled!\n");
-
                         if (reservationPayment.TransactionSuccessStatus)
                         {
                             guest.AccountBalance += reservationPayment.PaymentAmt;
@@ -177,6 +175,9 @@ namespace SEAssignment
                             guest.AddVoucher(reservationPayment.VoucherUsed);
                             Console.WriteLine("Your voucher {0} with a discount of {1} has been stored back in your account.\n", reservationPayment.VoucherUsed.VoucherId, reservationPayment.VoucherUsed.VoucherDiscount);
                         }
+                        guest.Reservation.Room.RoomStatus = "Available";
+                        guest.Reservation.setReservationStatus("Cancelled");
+                        Console.WriteLine("\nYour reservation has been cancelled!\n");
                         viewReservation(guest, reservationPayment);
                     }
                     else

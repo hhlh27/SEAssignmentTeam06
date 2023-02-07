@@ -15,10 +15,11 @@ namespace SEAssignment
         public bool IsBreakfastServed { get; set; }
         public int MaxNumGuests { get; set; }
         public double Cost { get; set; }
+        public string RoomStatus { get; set; }
 
         private List<Reservation> reservationsList = new List<Reservation>();
 
-        public Room(int roomId, Hotel hotel, string roomType, string bedType, bool isBreakfastServed, int maxGuest, double cost)
+        public Room(int roomId, Hotel hotel, string roomType, string bedType, bool isBreakfastServed, int maxGuest, double cost, string roomStatus)
         {
             RoomId = roomId;
             Hotel = hotel;
@@ -27,6 +28,7 @@ namespace SEAssignment
             IsBreakfastServed = isBreakfastServed;
             MaxNumGuests = maxGuest;
             Cost = cost;
+            RoomStatus = roomStatus;
         }
     }
 }
