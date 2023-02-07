@@ -177,7 +177,7 @@ namespace SEAssignment
                         }
                         guest.Reservation.Room.RoomStatus = "Available";
                         guest.Reservation.setReservationStatus("Cancelled");
-                        Console.WriteLine("\nYour reservation has been cancelled!\n");
+                        Console.WriteLine("Your reservation has been cancelled!\n");
                         viewReservation(guest, reservationPayment);
                     }
                     else
