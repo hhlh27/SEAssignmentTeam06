@@ -44,7 +44,11 @@ namespace SEAssignment
 
                         break;
                     case "4":
-                        makeReservation();
+                        // The client code.
+                        var context = new Context(new Submitted());
+                        context.Request1();
+                        context.Request2();
+                        //makeReservation();
                         break;
 
                     case "5":
