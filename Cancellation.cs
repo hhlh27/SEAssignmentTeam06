@@ -9,14 +9,18 @@ namespace SEAssignment
     public class Cancellation
     {
         public string CancellationId { get; set; }
+        public int ReservationId { get; set; }
         public DateTime CancellationDate { get; set; }
         public double AmtRefunded { get; set; }
 
-        public Cancellation(string cancellationId, DateTime cancellationDate, double amtRefund)
+        public Cancellation(string cancellationId, int reservationId, DateTime cancellationDate, double amtRefund)
         {
             CancellationId = cancellationId;
+            ReservationId = reservationId;
             CancellationDate = cancellationDate;
             AmtRefunded = amtRefund;
         }
+
+        public Cancellation() { }
     }
 }

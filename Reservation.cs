@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,27 +11,14 @@ namespace SEAssignment
     {  
         public int ReservationId { get; set; }
         public int GuestId { get; set; }
-        public Room Room { get; set; }
+        public Room Room { get; set; } = new Room();
         public DateTime CheckInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
         public string ReservationStatus { get; set; }
-        public DateTime DateCancelled
-        {
-            get
-            {
-                if (ReservationStatus == "Cancelled")
-                {
-                    return DateTime.Now;
-                }
-                else
-                {
-                    // If transaction success status is false, date paid is set to "01/01/0001 00:00:00"
-                    return new DateTime();
-                }
-            }
-        }
+        public ReservationPayment ReservationPayment { get; set; }
+        public Cancellation Cancellation { get; set; }
 
-        public Reservation(int reservationId, int guestId, Room room, DateTime checkInDate, DateTime checkOutDate, string reservationStatus)
+        public Reservation(int reservationId, int guestId, Room room, DateTime checkInDate, DateTime checkOutDate, string reservationStatus, ReservationPayment reservationPayment, Cancellation cancellation)
         {
             ReservationId = reservationId;
             GuestId = guestId;
@@ -38,8 +26,11 @@ namespace SEAssignment
             CheckInDate = checkInDate;
             CheckOutDate = checkOutDate;
             ReservationStatus = reservationStatus;
+            ReservationPayment = reservationPayment;
+            Cancellation = cancellation;
         }
 
+        public Reservation() { }
 
         public bool confirmReservation(bool isFullyPaid)
         {
@@ -56,6 +47,5 @@ namespace SEAssignment
         {
             this.ReservationStatus = reservationStatus;
         }
-
     }
 }

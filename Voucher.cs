@@ -16,5 +16,7 @@ namespace SEAssignment
             VoucherId = voucherId;
             VoucherDiscount = voucherDiscount;
         }
+
+        public Voucher() { }
     }
 }

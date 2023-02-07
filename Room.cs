@@ -30,5 +30,7 @@ namespace SEAssignment
             Cost = cost;
             RoomStatus = roomStatus;
         }
+
+        public Room() { }
     }
 }

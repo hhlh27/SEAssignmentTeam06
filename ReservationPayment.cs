@@ -12,7 +12,7 @@ namespace SEAssignment
         public Guest Guest { get; set; }
         public int TransactionId { get; set; }
         public string PaymentMethod { get; set; }
-        public bool TransactionSuccessStatus { get; set; } = false;
+        public bool TransactionSuccessStatus { get; set; }
         public Voucher VoucherUsed { get; set; }
         public DateTime DatePaid 
         { 

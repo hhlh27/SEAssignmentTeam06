@@ -8,7 +8,8 @@ namespace SEAssignment
 {
     public class Guest : Person
     {
-        private List<Voucher> VoucherList = new List<Voucher>();
+        private List<Voucher> voucherList = new List<Voucher>();
+        private List<Rating> ratingsList= new List<Rating>();
         public int GuestId { get; set; }
         public string PersonalId { get; set; }
         public int ContactNum { get; set; }
@@ -61,7 +62,7 @@ namespace SEAssignment
         //}
         public void AddVoucher(Voucher voucher)
         {
-            VoucherList.Add(voucher);
+            voucherList.Add(voucher);
         }
             
     }

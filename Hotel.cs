@@ -28,6 +28,7 @@ namespace SEAssignment
             IsVouchersAllowed = iv;
             ReviewScore = r;
         }
+        public Hotel() { }
         public void addRating(Rating r)
         {
 
