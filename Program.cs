@@ -141,7 +141,6 @@ namespace SEAssignment
         private static void cancelReservation(Guest guest)
         {
             //implement cancellation use case (Caleb)
-
             Console.Write("Would you like to cancel this reservation? (y/n): ");
             var userInput = Console.ReadLine();
             if (userInput == "y")
