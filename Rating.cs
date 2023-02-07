@@ -11,10 +11,11 @@ namespace SEAssignment
     public class Rating : ISubject
     {
         private List<IObserver> _observers;
+        private string _ratingState;
         public int RatingId { get; set; }
-
         public int StarRating { get; set; }
         public string Review { get; set; }
+        public Hotel Hotel { get; set; }
 
         public string RatingState 
         {
@@ -26,13 +27,12 @@ namespace SEAssignment
             }
         }
 
-        private string _ratingState;
-
-        public Rating(int ratingId, int starRating, string review) 
+        public Rating(int ratingId, int starRating, string review, Hotel hotel) 
         {
             RatingId= ratingId;
             StarRating= starRating;
             Review = review;    
+            Hotel = hotel;
             _observers = new List<IObserver>();
         }
 

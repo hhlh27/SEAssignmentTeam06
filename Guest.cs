@@ -8,7 +8,7 @@ namespace SEAssignment
 {
     public class Guest : Person
     {
-        private List<Voucher> voucherList = new List<Voucher>();
+        private List<Voucher> vouchersList = new List<Voucher>();
         private List<Rating> ratingsList= new List<Rating>();
         public int GuestId { get; set; }
         public string PersonalId { get; set; }
@@ -60,10 +60,22 @@ namespace SEAssignment
         //{
         //    // implementation
         //}
-        public void AddVoucher(Voucher voucher)
+        public void addVoucher(Voucher voucher)
         {
-            voucherList.Add(voucher);
+            vouchersList.Add(voucher);
         }
-            
+        public void addRating(Rating rating)
+        {
+            ratingsList.Add(rating);
+        }
+        public List<Rating> getRatings() { return ratingsList; }
+        public void updateRating(int updatedRatingIdx, int starRating, string review)
+        {
+            foreach (Rating r in ratingsList)
+            {
+                r.StarRating = starRating;
+                r.Review = review;
+            }
+        }
     }
 }

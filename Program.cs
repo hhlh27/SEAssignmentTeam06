@@ -16,10 +16,12 @@ namespace SEAssignment
             Guest guest = new Guest();
             Hotel h = new Hotel(3, "Budget Hotel", "123 Geylang Road", "Budget", true, 2);
             Room room = new Room(1, h, "Deluxe", "Queen", true, 2, 150.00, "Reserved");
-            ReservationPayment reservationPayment = new ReservationPayment();
-            reservationPayment.Guest = guest;
-            reservationPayment.VoucherUsed = new Voucher("v12345", "15%");
-            reservationPayment.TransactionSuccessStatus = true;
+            ReservationPayment reservationPayment = new ReservationPayment
+            {
+                Guest = guest,
+                VoucherUsed = new Voucher("v12345", "15%"),
+                TransactionSuccessStatus = true
+            };
             guest.Reservation = new Reservation(1, 1, room, DateTime.Now.AddDays(3), DateTime.Now.AddDays(4), "Confirmed", reservationPayment, new Cancellation());
             reservationPayment.Reservation = guest.Reservation;
 
@@ -54,7 +56,6 @@ namespace SEAssignment
                         }
                         else
                         {
-                            viewReservation(guest);
                             cancelReservation(guest);
 
                         }
@@ -64,11 +65,11 @@ namespace SEAssignment
 
                         break;
                     case "7":
-                        rateHotel(h);
+                        rateHotel(h,guest);
 
                         break;
                     case "8":
-                        updateRating();
+                        updateRating(guest);
 
                         break;
                    
@@ -78,11 +79,6 @@ namespace SEAssignment
 
 
         }
-        private static void updateRating()
-        {
-            throw new NotImplementedException();
-        }
-
         private static void makeReservation()
         {
             throw new NotImplementedException();
@@ -102,7 +98,7 @@ namespace SEAssignment
             Console.WriteLine("Guest Account");
         }
 
-        private static Rating rateHotel(Hotel h)
+        private static Rating rateHotel(Hotel h, Guest guest)
         {
             //implement Ratings use case (Hannah)
 
@@ -121,7 +117,9 @@ namespace SEAssignment
             sysAdmin.LoginEmail = "abc@gmail.com";
             sysAdmin.LoginPassword = "123";
             sysAdmin.Name = "John";         
-            Rating r = new Rating(1, starRating, feedback);
+            Rating r = new Rating(1, starRating, feedback, h);
+            // (Caleb) I added rating to the guest's rating list
+            guest.addRating(r);
             // Regiser observer
             r.RegisterObserver(sysAdmin);
             r.RatingState = ratingState;
@@ -140,6 +138,7 @@ namespace SEAssignment
 
         private static void cancelReservation(Guest guest)
         {
+            viewReservation(guest);
             //implement cancellation use case (Caleb)
             Console.Write("Would you like to cancel this reservation? (y/n): ");
             var userInput = Console.ReadLine();
@@ -157,7 +156,7 @@ namespace SEAssignment
                     }
                     if (guest.Reservation.ReservationPayment.VoucherUsed != null)
                     {
-                        guest.AddVoucher(guest.Reservation.ReservationPayment.VoucherUsed);
+                        guest.addVoucher(guest.Reservation.ReservationPayment.VoucherUsed);
                         Console.WriteLine("Your voucher {0} with a discount of {1} has been stored back in your account.\n", 
                             guest.Reservation.ReservationPayment.VoucherUsed.VoucherId, 
                             guest.Reservation.ReservationPayment.VoucherUsed.VoucherDiscount);
@@ -231,6 +230,44 @@ namespace SEAssignment
                 Console.WriteLine("Amount due: ${0} (Not paid)", Math.Round(guest.Reservation.ReservationPayment.PaymentDue, 2));
             }
             Console.WriteLine("Reservation status: {0}\n", guest.Reservation.ReservationStatus);
+        }
+        private static void updateRating(Guest guest)
+        {
+            int newStarRating;
+            viewRatings(guest);
+            List<Rating> ratings = guest.getRatings();
+            Console.Write("Please select a number in the square brackets to update the rating: ");
+            int choice = Int32.Parse(Console.ReadLine());
+            Rating selectedRating = ratings[choice-1];
+            Console.Write("\nEnter your new rating out of 5 stars (Press enter to skip): ");       
+            // Handle empty input
+            if (Int32.TryParse(Console.ReadLine(), out newStarRating))
+            {
+                selectedRating.StarRating = newStarRating;
+                selectedRating.RatingState = "updated a star rating";
+            }
+            Console.Write("\nEnter your new review (Press enter to skip): ");
+            string newReview = Console.ReadLine();
+            if (newReview != String.Empty) 
+            {
+                selectedRating.Review = newReview;
+                selectedRating.RatingState = "updated a review";
+            }
+            Console.WriteLine("\nYour rating has been updated!\n");
+            viewRatings(guest);
+        }
+        private static void viewRatings(Guest guest)
+        {
+            Console.WriteLine("----- Your Ratings -----");
+            List<Rating> ratings = guest.getRatings();
+            int count = 0;
+            foreach (Rating r in ratings)
+            {
+                count += 1;
+                Console.WriteLine("[{0}]: Rating for {1}", count, r.Hotel.HotelName);
+                Console.WriteLine("Rating out of 5 stars: " + r.StarRating);
+                Console.WriteLine("Review: " + r.Review + "\n");
+            }
         }
     }
 }
