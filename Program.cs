@@ -98,7 +98,7 @@ namespace SEAssignment
             };
 
             //prompt user to select hotel and room
-            Console.WriteLine("----Make Reservation---- ");
+            Console.WriteLine("\n----Make Reservation---- ");
             foreach (Hotel item in hotelList)
             {
                 Console.WriteLine("[" + item.HotelId + "]" + " " + item.HotelName + " " + item.HotelType + " " + item.Location + " Is Voucher Allowed: " + item.IsVouchersAllowed + " Rating: " + item.ReviewScore);
@@ -106,9 +106,10 @@ namespace SEAssignment
             Console.WriteLine("Select Hotel: ");
             int selectedHotel = Int32.Parse(Console.ReadLine());
 
+            Console.WriteLine();
             foreach (Room item in roomList)
             {
-                Console.WriteLine("[" + item.RoomId + "]" + " " + item.RoomType + " " + item.RoomStatus + " " + item.BedType + " " + item.MaxNumGuests + " " + item.Cost + " Is Breakfast Served: " + item.IsBreakfastServed);
+                Console.WriteLine("[" + item.RoomId + "]" + " " + item.RoomType + " " + item.RoomStatus + " " + item.BedType + " " + item.MaxNumGuests + " $" + item.Cost + " Is Breakfast Served: " + item.IsBreakfastServed);
             }
 
             Console.WriteLine("Select Room: ");
@@ -116,13 +117,26 @@ namespace SEAssignment
             Room reservedRoom = searchRoom(roomList, selectedRoom);
 
             //prompt user to enter date
-            Console.Write("Enter check-in date (e.g. 2023-03-30 22:12 PM): ");
+            Console.Write("\nEnter check-in date (e.g. 2023-03-30 22:12 PM): ");
             var checkInDate = Console.ReadLine();
             DateTime oCheckInDate = DateTime.ParseExact(checkInDate, "yyyy-MM-dd HH:mm tt", null);
 
-            Console.Write("Enter check-out date (e.g. 2023-03-30 22:12 PM): ");
+            Console.Write("\nEnter check-out date (e.g. 2023-03-30 22:12 PM): ");
             var checkOutDate = Console.ReadLine();
             DateTime oCheckOutDate = DateTime.ParseExact(checkOutDate, "yyyy-MM-dd HH:mm tt", null);
+
+            //prompt user to enter promo code (if applicable)
+            Console.Write("\nDo you wish to use credit card? (y/n): ");
+            var answer = Console.ReadLine();
+            double price = 0.00;
+            if (answer == "y")
+            {
+                price = reservedRoom.Cost * 0.8;
+            }
+            else
+            {
+                price = reservedRoom.Cost;
+            }
 
             //update reservation status using state design pattern
             Reservation reservation = new Reservation();
@@ -131,12 +145,13 @@ namespace SEAssignment
             reservation.setReservationStatus(status);
 
             //print out reservation details
-            Console.WriteLine("----Confirm Details---- ");
+            Console.WriteLine("\n----Confirm Details---- ");
             Console.WriteLine("Guest ID: " + guest.GuestId);
             Console.WriteLine("Selected Room: " + reservedRoom.RoomType);
             Console.WriteLine("Check In Date: " + oCheckInDate.ToString("MM/dd/yyyy HH:mm"));
             Console.WriteLine("Check Out Date: " + oCheckOutDate.ToString("MM/dd/yyyy HH:mm"));
             Console.WriteLine("Reservation Status: " + reservation.ReservationStatus);
+            Console.WriteLine("Total Cost: " + price);
 
             //prompt user to confirm and create reservation
             Console.Write("Confrim Submit (y/n): ");
@@ -152,8 +167,13 @@ namespace SEAssignment
 
                 // Setting reservation to guest's reservation object
                 guest.Reservation = r;
-                Console.WriteLine("You have successfully made a reservation!");
+                Console.WriteLine("\nYou have successfully made a reservation!");
                 viewReservation(guest);
+                Console.WriteLine("Amount due: ${0} (Not paid after discount)\n", price);
+            }
+            else
+            {
+                Console.WriteLine("Reservation not submitted, please try again.");
             }
         }
 
