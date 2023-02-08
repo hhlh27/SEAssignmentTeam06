@@ -46,7 +46,12 @@ namespace SEAssignment
 
                         break;
                     case "4":
-                        // The client code.
+
+                        Console.Write("Enter a date (e.g. 03/22/2023 07:22:00): ");
+                        DateTime inputtedDate = DateTime.Parse(Console.ReadLine());
+                        Console.WriteLine(inputtedDate);
+
+                        // The client code.                 
                         Hotel hotel = new Hotel(1, "name", "l", "ht", true, 9);
                         Room rr = new Room(1, hotel, "abc", "abc", true, 6, 9300.03, "stat");
                         var date1 = new DateTime(2023, 3, 1, 8, 30, 52);
@@ -93,7 +98,63 @@ namespace SEAssignment
         }
         private static void makeReservation()
         {
-            throw new NotImplementedException();
+            Guest guest = new Guest();
+            //Hotel h1 = new Hotel(4, "Budget Hotel", "123 Geylang Road", "Budget", true, 4);
+            //Hotel h2 = new Hotel(5, "Luxury Hotel", "311 Clementi Road", "Luxury", true, 5);
+            //Hotel h3 = new Hotel(6, "City Hotel", "12 Woodlands Road", "City", true, 2);
+            //Room r1 = new Room(1, h1, "Deluxe", "Queen", true, 2, 150.00, "Reserved");
+            //Room r2 = new Room(2, h1, "Regular", "King", true, 2, 100.00, "Available");
+
+            List<Hotel> hotelList = new List<Hotel>
+            {
+               new Hotel(1, "Budget Hotel", "123 Geylang Road", "Budget", true, 4),
+               new Hotel(2, "Luxury Hotel", "311 Clementi Road", "Luxury", true, 5),
+               new Hotel(3, "City Hotel", "12 Woodlands Road", "City", true, 2)
+            };
+
+            List<Room> roomList = new List<Room>
+            {
+                new Room(1, h1, "Deluxe", "Queen", true, 2, 150.00, "Reserved"),
+               new Room(2, h1, "Regular", "King", true, 2, 100.00, "Available")
+            };
+
+            Console.WriteLine("----Make Reservation---- ");
+            foreach (Hotel item in hotelList)
+            {
+                Console.WriteLine("[" + item.HotelId + "]" + item.HotelName + item.HotelType + item.Location + "Is Voucher Allowed: " + item.IsVouchersAllowed + item.ReviewScore);
+            }
+            Console.WriteLine("Select Hotel: ");
+            int selectedHotel = Int32.Parse(Console.ReadLine());
+
+            foreach (Room item in roomList)
+            {
+                Console.WriteLine("[" + item.RoomId + "]" + item.RoomType + item.Hotel + item.RoomStatus + item.BedType + item.MaxNumGuests + item.Cost + "Is Breakfast Served: " +item.IsBreakfastServed);
+            }
+            Console.WriteLine("Select Room: ");
+            int selectedRoom = Int32.Parse(Console.ReadLine());
+            Room reservedRoom = searchRoom(roomList, selectedRoom);
+
+            Console.Write("Enter a date (e.g. 03/22/2023 07:22:00): ");
+            DateTime inputtedDate = DateTime.Parse(Console.ReadLine());
+            
+            Reservation reservation = new Reservation(5, guest.GuestId, reservedRoom );
+
+            
+
+        }
+
+        private static Room searchRoom(List<Room> roomList, int id)
+        {
+            foreach (Room item in roomList)
+            {
+                if(item.RoomId == id)
+                {
+                    return item;
+                }
+            }
+           
+            return null;
+
         }
 
         private static void viewAllHotels()
