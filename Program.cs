@@ -46,7 +46,7 @@ namespace SEAssignment
 
                         break;
                     case "4":
-                        makeReservation();
+                        makeReservation(guest, h);
                         break;
 
                     case "5":
@@ -79,11 +79,8 @@ namespace SEAssignment
 
 
         }
-        private static void makeReservation()
+        private static void makeReservation(Guest guest, Hotel h1)
         {
-            Guest guest = new Guest();
-            Hotel h1 = new Hotel(4, "Budget Hotel", "123 Geylang Road", "Budget", true, 4);
-
             //available hotel
             List<Hotel> hotelList = new List<Hotel>
             {
@@ -123,7 +120,7 @@ namespace SEAssignment
             var checkInDate = Console.ReadLine();
             DateTime oCheckInDate = DateTime.ParseExact(checkInDate, "yyyy-MM-dd HH:mm tt", null);
 
-            Console.Write("Enter check-in date (e.g. 2023-03-30 22:12 PM): ");
+            Console.Write("Enter check-out date (e.g. 2023-03-30 22:12 PM): ");
             var checkOutDate = Console.ReadLine();
             DateTime oCheckOutDate = DateTime.ParseExact(checkOutDate, "yyyy-MM-dd HH:mm tt", null);
 
@@ -146,7 +143,17 @@ namespace SEAssignment
             var respond = Console.ReadLine();
             if(respond == "y")
             {
-                Reservation r = new Reservation(5, guest.GuestId, reservedRoom, oCheckInDate, oCheckOutDate, "", null, null);       
+                ReservationPayment reservationPayment = new ReservationPayment();
+                Reservation r = new Reservation(5, guest.GuestId, reservedRoom, oCheckInDate, oCheckOutDate, "Submitted", reservationPayment, null);
+                // When making reservation, new reservationpayment object is created
+                // Since payment has not been made, payment properties such as TransactionId, TransactionSuccessStatus are not set
+                reservationPayment.Reservation = r;
+                reservationPayment.Guest = guest;
+
+                // Setting reservation to guest's reservation object
+                guest.Reservation = r;
+                Console.WriteLine("You have successfully made a reservation!");
+                viewReservation(guest);
             }
         }
 
@@ -224,6 +231,10 @@ namespace SEAssignment
             var userInput = Console.ReadLine();
             if (userInput == "y")
             {
+                // Initilize Cancellation object in guest's reservation
+                Cancellation cancellation = new Cancellation();
+                guest.Reservation.Cancellation = cancellation;
+
                 Console.WriteLine();
                 if ((guest.Reservation.CheckInDate - DateTime.Now).TotalDays >= 2)
                 {

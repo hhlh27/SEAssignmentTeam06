@@ -10,7 +10,7 @@ namespace SEAssignment
     {
         public Reservation Reservation { get; set; }
         public Guest Guest { get; set; }
-        public int TransactionId { get; set; }
+        public string TransactionId { get; set; }
         public string PaymentMethod { get; set; }
         public bool TransactionSuccessStatus { get; set; }
         public Voucher VoucherUsed { get; set; }
@@ -58,7 +58,7 @@ namespace SEAssignment
             }
         }
 
-        public ReservationPayment(Reservation reservation, Guest guest, int transactionId, string paymentMethod, bool transactionSuccessStatus, Voucher voucherUsed)
+        public ReservationPayment(Reservation reservation, Guest guest, string transactionId, string paymentMethod, bool transactionSuccessStatus, Voucher voucherUsed)
         {
             Reservation = reservation;
             Guest = guest;

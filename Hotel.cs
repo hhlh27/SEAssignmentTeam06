@@ -19,14 +19,14 @@ namespace SEAssignment
         private List<Room> roomsList = new List<Room>();
 
         private List<Rating> ratingsList = new List<Rating>();
-        public Hotel(int id, string n, string l, string ht, bool iv, int r)
+        public Hotel(int hotelId, string hotelName, string location, string hotelType, bool isVouchersAllowed, int reviewScore)
         {
-            HotelId = id;
-            HotelName = n;
-            Location = l;
-            HotelType = ht;
-            IsVouchersAllowed = iv;
-            ReviewScore = r;
+            HotelId = hotelId;
+            HotelName = hotelName;
+            Location = location;
+            HotelType = hotelType;
+            IsVouchersAllowed = isVouchersAllowed;
+            ReviewScore = reviewScore;
         }
         public Hotel() { }
         public void addRating(Rating r)
