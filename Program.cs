@@ -14,7 +14,12 @@ namespace SEAssignment
         public static void Main(string[] args)
         {
             Guest guest = new Guest();
-            Hotel h = new Hotel(3, "Grand Hyatt Singapore", "10 Scotts Rd", "City Hotel", true, 2);
+            HotelCollection hotelCollection = new HotelCollection();
+            hotelCollection[0] = new Hotel(1, "Grand Hyatt Singapore", "10 Scotts Rd", "City", true, 4);
+            hotelCollection[1] = new Hotel(2, "Budget A Hotel", "123 Geylang Road", "Budget", true, 2);
+            hotelCollection[2] = new Hotel(3, "Family B Hotel", "223 Avenue Road", "Family-friendly", true, 3);
+            hotelCollection[3] = new Hotel(4, "Luxury C Hotel", "113 Orchard Road", "Luxury", true, 5);
+            Hotel h = new Hotel(3, "Grand Hyatt Singapore", "10 Scotts Rd", "City Hotel", true, 4);
             Room room = new Room(1, h, "Deluxe", "Queen", true, 2, 150.00, "Reserved");
             ReservationPayment reservationPayment = new ReservationPayment
             {
@@ -38,7 +43,7 @@ namespace SEAssignment
 
                         break;
                     case "2":
-                        viewAllHotels();
+                        viewAllHotels(hotelCollection);
 
                         break;
                     case "3":
@@ -191,11 +196,20 @@ namespace SEAssignment
 
         }
 
-        private static void viewAllHotels()
+        private static void viewAllHotels(HotelCollection hc)
 
         {
             //implement view hotels using iterator design patter(Hannnah)
-           
+            IIterator i = hc.CreateIterator();
+            Console.WriteLine("Iterating over Hotel collection:");
+
+
+            for (Hotel item = (Hotel)i.First();
+                   !i.IsDone; item = (Hotel)i.Next())
+            {
+                Console.WriteLine(item.HotelName);
+            }
+
 
         }
 
@@ -331,7 +345,7 @@ namespace SEAssignment
 
         private static void displayMenu()
         {
-
+            Console.WriteLine("");
             Console.WriteLine("-----BookHoliStay Menu-------");
             Console.WriteLine("1. Manage Guest Account ");
             Console.WriteLine("2. View All Hotels");
@@ -342,7 +356,7 @@ namespace SEAssignment
             Console.WriteLine("7. Rate Hotel");
             Console.WriteLine("8. Update Rating");
             //check in state
-            Console.WriteLine("");
+           
         }
 
         private static void viewReservation(Guest guest)
