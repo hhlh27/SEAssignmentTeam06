@@ -14,7 +14,7 @@ namespace SEAssignment
         public static void Main(string[] args)
         {
             Guest guest = new Guest();
-            Hotel h = new Hotel(3, "Budget Hotel", "123 Geylang Road", "Budget", true, 2);
+            Hotel h = new Hotel(3, "Grand Hyatt Singapore", "10 Scotts Rd", "City Hotel", true, 2);
             Room room = new Room(1, h, "Deluxe", "Queen", true, 2, 150.00, "Reserved");
             ReservationPayment reservationPayment = new ReservationPayment
             {
@@ -188,34 +188,65 @@ namespace SEAssignment
         private static Rating rateHotel(Hotel h, Guest guest)
         {
             //implement Ratings use case (Hannah)
-
+            int starRating = 0;
+            bool ratingIsValid = false;
+            string sRating = "";
             Console.WriteLine("----Rate Hotel---- ");
-            Console.WriteLine("Reseravations Details: ");
+            
             Console.WriteLine("Hotel Details: ");
             Console.WriteLine("Hotel Name: " + h.HotelName);
+            Console.WriteLine("Hotel Address: " + h.Location);
             Console.WriteLine("Hotel Type: " + h.HotelType);
             Console.Write("Enter a Star Rating (1-5): ");
-            int starRating = Int32.Parse(Console.ReadLine());
+            string rating = Console.ReadLine();
+            ratingIsValid = validateStarRating(rating);
+            while (!ratingIsValid)
+            {
+                Console.WriteLine("Invalid input.");
+                Console.Write("Enter a Star Rating (1-5): ");
+                rating = Console.ReadLine();
+                ratingIsValid = validateStarRating(rating);
+            }
+            
+            starRating = Int32.Parse(rating);
             Console.Write("Enter your feedback:  ");
             string feedback = Console.ReadLine();
             string ratingState = "submitted a review";
+            Rating r = new Rating(1, starRating, feedback, h);
+            Console.WriteLine("Rating submitted successfully.\n");
+            h.addRating(r);
+            // (Caleb) I added rating to the guest's rating list
+            guest.addRating(r);
+            // Regiser observer
             // Admin that observes rating
             var sysAdmin = new SystemAdmin();
             sysAdmin.LoginEmail = "abc@gmail.com";
             sysAdmin.LoginPassword = "123";
-            sysAdmin.Name = "John";         
-            Rating r = new Rating(1, starRating, feedback, h);
-            // (Caleb) I added rating to the guest's rating list
-            guest.addRating(r);
-            // Regiser observer
+            sysAdmin.Name = "John";
             r.RegisterObserver(sysAdmin);
             r.RatingState = ratingState;
-            h.addRating(r);
-
-            Console.WriteLine("Rating submitted successfully.\n");
-
+            
             return r;
         }
+
+        private static bool validateStarRating(string? starRating)
+        {
+            int numericValue;
+            bool isNumber = int.TryParse(starRating, out numericValue);
+            if (isNumber)
+            {
+                int sRating = Int32.Parse(starRating);
+                if (sRating >= 0 && sRating <= 5 && isNumber)
+                {
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+    
 
         private static void manageVouchers()
         {
