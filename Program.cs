@@ -46,24 +46,7 @@ namespace SEAssignment
 
                         break;
                     case "4":
-
-                        Console.Write("Enter a date (e.g. 03/22/2023 07:22:00): ");
-                        DateTime inputtedDate = DateTime.Parse(Console.ReadLine());
-                        Console.WriteLine(inputtedDate);
-
-                        // The client code.                 
-                        Hotel hotel = new Hotel(1, "name", "l", "ht", true, 9);
-                        Room rr = new Room(1, hotel, "abc", "abc", true, 6, 9300.03, "stat");
-                        var date1 = new DateTime(2023, 3, 1, 8, 30, 52);
-                        var date2 = new DateTime(2023, 3, 4, 8, 30, 52);
-                        Reservation r = new Reservation(1, 1, rr, date1, date2, "empty", null, null);
-
-                        var context = new Context(new Submitted());
-                        string status = context.Request1(r);
-
-                        r.setReservationStatus(status);
-                        Console.WriteLine(r.ReservationStatus);
-                        //makeReservation();
+                        makeReservation();
                         break;
 
                     case "5":
@@ -99,48 +82,72 @@ namespace SEAssignment
         private static void makeReservation()
         {
             Guest guest = new Guest();
-            //Hotel h1 = new Hotel(4, "Budget Hotel", "123 Geylang Road", "Budget", true, 4);
-            //Hotel h2 = new Hotel(5, "Luxury Hotel", "311 Clementi Road", "Luxury", true, 5);
-            //Hotel h3 = new Hotel(6, "City Hotel", "12 Woodlands Road", "City", true, 2);
-            //Room r1 = new Room(1, h1, "Deluxe", "Queen", true, 2, 150.00, "Reserved");
-            //Room r2 = new Room(2, h1, "Regular", "King", true, 2, 100.00, "Available");
+            Hotel h1 = new Hotel(4, "Budget Hotel", "123 Geylang Road", "Budget", true, 4);
 
+            //available hotel
             List<Hotel> hotelList = new List<Hotel>
             {
                new Hotel(1, "Budget Hotel", "123 Geylang Road", "Budget", true, 4),
                new Hotel(2, "Luxury Hotel", "311 Clementi Road", "Luxury", true, 5),
-               new Hotel(3, "City Hotel", "12 Woodlands Road", "City", true, 2)
+               new Hotel(3, "City Hotel", "12 Woodlands Road", "City", true, 2),
+               new Hotel(4, "Budget Hotel", "321 Geylang Road", "Budget", true, 4)
             };
 
+            //available room type
             List<Room> roomList = new List<Room>
             {
                 new Room(1, h1, "Deluxe", "Queen", true, 2, 150.00, "Reserved"),
                new Room(2, h1, "Regular", "King", true, 2, 100.00, "Available")
             };
 
+            //prompt user to select hotel and room
             Console.WriteLine("----Make Reservation---- ");
             foreach (Hotel item in hotelList)
             {
-                Console.WriteLine("[" + item.HotelId + "]" + item.HotelName + item.HotelType + item.Location + "Is Voucher Allowed: " + item.IsVouchersAllowed + item.ReviewScore);
+                Console.WriteLine("[" + item.HotelId + "]" + " " + item.HotelName + " " + item.HotelType + " " + item.Location + " Is Voucher Allowed: " + item.IsVouchersAllowed + " Rating: " + item.ReviewScore);
             }
             Console.WriteLine("Select Hotel: ");
             int selectedHotel = Int32.Parse(Console.ReadLine());
 
             foreach (Room item in roomList)
             {
-                Console.WriteLine("[" + item.RoomId + "]" + item.RoomType + item.Hotel + item.RoomStatus + item.BedType + item.MaxNumGuests + item.Cost + "Is Breakfast Served: " +item.IsBreakfastServed);
+                Console.WriteLine("[" + item.RoomId + "]" + " " + item.RoomType + " " + item.RoomStatus + " " + item.BedType + " " + item.MaxNumGuests + " " + item.Cost + " Is Breakfast Served: " + item.IsBreakfastServed);
             }
+
             Console.WriteLine("Select Room: ");
             int selectedRoom = Int32.Parse(Console.ReadLine());
             Room reservedRoom = searchRoom(roomList, selectedRoom);
 
-            Console.Write("Enter a date (e.g. 03/22/2023 07:22:00): ");
-            DateTime inputtedDate = DateTime.Parse(Console.ReadLine());
-            
-            Reservation reservation = new Reservation(5, guest.GuestId, reservedRoom );
+            //prompt user to enter date
+            Console.Write("Enter check-in date (e.g. 2023-03-30 22:12 PM): ");
+            var checkInDate = Console.ReadLine();
+            DateTime oCheckInDate = DateTime.ParseExact(checkInDate, "yyyy-MM-dd HH:mm tt", null);
 
-            
+            Console.Write("Enter check-in date (e.g. 2023-03-30 22:12 PM): ");
+            var checkOutDate = Console.ReadLine();
+            DateTime oCheckOutDate = DateTime.ParseExact(checkOutDate, "yyyy-MM-dd HH:mm tt", null);
 
+            //update reservation status using state design pattern
+            Reservation reservation = new Reservation();
+            var context = new Context(new Submitted());
+            string status = context.Request1(reservation);
+            reservation.setReservationStatus(status);
+
+            //print out reservation details
+            Console.WriteLine("----Confirm Details---- ");
+            Console.WriteLine("Guest ID: " + guest.GuestId);
+            Console.WriteLine("Selected Room: " + reservedRoom.RoomType);
+            Console.WriteLine("Check In Date: " + oCheckInDate.ToString("MM/dd/yyyy HH:mm"));
+            Console.WriteLine("Check Out Date: " + oCheckOutDate.ToString("MM/dd/yyyy HH:mm"));
+            Console.WriteLine("Reservation Status: " + reservation.ReservationStatus);
+
+            //prompt user to confirm and create reservation
+            Console.Write("Confrim Submit (y/n): ");
+            var respond = Console.ReadLine();
+            if(respond == "y")
+            {
+                Reservation r = new Reservation(5, guest.GuestId, reservedRoom, oCheckInDate, oCheckOutDate, "", null, null);       
+            }
         }
 
         private static Room searchRoom(List<Room> roomList, int id)
@@ -235,7 +242,12 @@ namespace SEAssignment
                             guest.Reservation.ReservationPayment.VoucherUsed.VoucherDiscount);
                     }
                     guest.Reservation.Room.RoomStatus = "Available";
-                    guest.Reservation.setReservationStatus("Cancelled");
+
+                    //update reservation status
+                    var context = new Context(new Submitted());
+                    string status = context.Request3(guest.Reservation);
+                    guest.Reservation.setReservationStatus(status);
+
                     guest.Reservation.Cancellation.CancellationId = "Cancelled_" + guest.Reservation.ReservationId.ToString();
                     guest.Reservation.Cancellation.CancellationDate = DateTime.Now;
                     guest.Reservation.Cancellation.AmtRefunded = guest.Reservation.ReservationPayment.PaymentAmt;
