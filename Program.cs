@@ -16,7 +16,7 @@ namespace SEAssignment
             Guest guest = new Guest();
             HotelCollection hotelCollection = new HotelCollection();
             hotelCollection[0] = new Hotel(1, "Grand Hyatt Singapore", "10 Scotts Rd", "City", true, 4);
-            hotelCollection[1] = new Hotel(2, "Budget A Hotel", "123 Geylang Road", "Budget", true, 2);
+            hotelCollection[1] = new Hotel(2, "Budget A Hotel", "123 Geylang Road", "Budget", false, 2);
             hotelCollection[2] = new Hotel(3, "Family B Hotel", "223 Avenue Road", "Family-friendly", true, 3);
             hotelCollection[3] = new Hotel(4, "Luxury C Hotel", "113 Orchard Road", "Luxury", true, 5);
             Hotel h = new Hotel(3, "Grand Hyatt Singapore", "10 Scotts Rd", "City Hotel", true, 4);
@@ -43,7 +43,7 @@ namespace SEAssignment
 
                         break;
                     case "2":
-                        viewAllHotels(hotelCollection);
+                        viewAllHotelsAcceptVouchers(hotelCollection);
 
                         break;
                     case "3":
@@ -84,6 +84,8 @@ namespace SEAssignment
 
 
         }
+
+       
         private static void makeReservation(Guest guest, Hotel h1)
         {
             //available hotel
@@ -196,22 +198,25 @@ namespace SEAssignment
 
         }
 
-        private static void viewAllHotels(HotelCollection hc)
+        private static void viewAllHotelsAcceptVouchers(HotelCollection hc)
 
         {
             //implement view hotels using iterator design patter(Hannnah)
             IIterator i = hc.CreateIterator();
-            Console.WriteLine("Iterating over Hotel collection:");
+            Console.WriteLine("Displaying All Hotels that accept Vouchers:");
 
 
             for (Hotel item = (Hotel)i.First();
                    !i.IsDone; item = (Hotel)i.Next())
             {
-                Console.WriteLine(item.HotelName);
+                if (item.IsVouchersAllowed==true)
+                    Console.WriteLine("Hotel Name: "+item.HotelName+", Address: "+item.Location+ ", Type:"+item.HotelType);
+                //Console.WriteLine(item.Location);
             }
 
 
         }
+      
 
         private static void manageGuestAccount()
         {
@@ -348,7 +353,7 @@ namespace SEAssignment
             Console.WriteLine("");
             Console.WriteLine("-----BookHoliStay Menu-------");
             Console.WriteLine("1. Manage Guest Account ");
-            Console.WriteLine("2. View All Hotels");
+            Console.WriteLine("2. View All Hotels (Vouchers Accepted)");
             Console.WriteLine("3. View Hotel Details");
             Console.WriteLine("4. Make a reservation ");
             Console.WriteLine("5. Cancel a Reservation");

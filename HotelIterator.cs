@@ -16,6 +16,8 @@ namespace SEAssignment
         public HotelIterator(HotelCollection collection)
         {
             this.collection = collection;
+            
+
         }
         // Gets first item
         public Hotel First()
@@ -31,6 +33,7 @@ namespace SEAssignment
                 return collection[current] as Hotel;
             else
                 return null;
+
         }
         // Gets or sets stepsize
         public int Step
