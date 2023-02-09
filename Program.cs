@@ -66,7 +66,7 @@ namespace SEAssignment
                         }
                         break;
                     case "6":
-                        manageVouchers();
+                        useVoucher();
 
                         break;
                     case "7":
@@ -287,14 +287,69 @@ namespace SEAssignment
         }
     
 
-        private static void manageVouchers()
+        private static void useVoucher()
         {
             //implement vouchers use case (Lay How)
-            throw new NotImplementedException();
+            Console.WriteLine("Vouchers");
+
+            Console.WriteLine("Do you have a voucher [Yes/No]");
+            Console.WriteLine("[Yes] - \"Yes\"");
+            Console.WriteLine("[No] - anything else");
+
+            reply = Console.ReadLine();
+
+            bool found = false;
+            bool run1 = false;
+
+            while (run1 == false)
+            {
+                if (reply == "Yes")
+                {
+                    Console.WriteLine("Enter voucher code");
+                    voucherId = Console.ReadLine();
+                    for (int i = 0; i < voucherList.Count(); i++)
+                    {
+                        if (voucherId == voucherList[i].voucherId)
+                        {
+                            var voucherApplied = new Voucher();
+                            voucherApplied = voucherList[i];
+                            found = true;
+                        }
+                    }
+
+                    if (found == true)
+                    {
+                        Console.WriteLine("Voucher applied.");
+                        run1 = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Voucher not found.");
+                        Console.WriteLine("Re-enter voucher code? [Yes/No]");
+
+                        Console.WriteLine("[Yes] - \"Yes\"");
+                        Console.WriteLine("[No] - anything else");
+
+                        reply1 = Console.ReadLine();
+
+                        if (reply1 == "Yes")
+                        {
+                            run1 = true;
+                        }
+                        else
+                        {
+                            run1 = false;
+                        }
+                    }
+                }
+            }
+
+            Console.WriteLine("Next...");
         }
 
         private static void cancelReservation(Guest guest)
         {
+  
             viewReservation(guest);
             //implement cancellation use case (Caleb)
             Console.Write("Would you like to cancel this reservation? (y/n): ");
