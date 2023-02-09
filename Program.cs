@@ -40,9 +40,6 @@ namespace SEAssignment
                 TransactionSuccessStatus = true
             };
 
-
-            guest.Reservation = new Reservation(1, 1, room, DateTime.Now.AddDays(3), DateTime.Now.AddDays(4), "Confirmed", reservationPayment, new Cancellation());
-            reservationPayment.Reservation = guest.Reservation;
             Reservation r1 = new Reservation(1, 1, room, new DateTime(2022, 10, 1, 7, 0, 0), new DateTime(2022, 10, 10, 7, 0, 0), "Fulfilled", reservationPayment, null);
             Reservation r2 = new Reservation(2, 1, room, new DateTime(2022, 11, 5, 7, 0, 0), new DateTime(2022, 11, 22, 5, 0, 0), "Fulfilled", reservationPayment, null);
             Reservation r3 = new Reservation(3, 1, room, new DateTime(2022, 12, 10, 7, 0, 0), new DateTime(2022, 12, 17, 7, 0, 0), "Fulfilled", reservationPayment, null);
@@ -99,7 +96,7 @@ namespace SEAssignment
                     case "5":
                         if (guest.Reservation == null)
                         {
-                            Console.WriteLine("You have no reservations.\n");
+                            Console.WriteLine("You have no reservations.");
                         }
                         else
                         {
@@ -180,11 +177,11 @@ namespace SEAssignment
             double price = 0.00;
             if (answer == "y")
             {
-                price = reservedRoom.Cost * 0.8;
+                price = (reservedRoom.Cost * (oCheckOutDate - oCheckInDate).TotalDays) * 0.8;
             }
             else
             {
-                price = reservedRoom.Cost;
+                price = reservedRoom.Cost * (oCheckOutDate - oCheckInDate).TotalDays;
             }
 
             //update reservation status using state design pattern
@@ -213,12 +210,13 @@ namespace SEAssignment
                 // Since payment has not been made, payment properties such as TransactionId, TransactionSuccessStatus are not set
                 reservationPayment.Reservation = r;
                 reservationPayment.Guest = guest;
+                reservationPayment.PaymentMethod = "credit card";
 
                 // Setting reservation to guest's reservation object
                 guest.Reservation = r;
                 Console.WriteLine("\nYou have successfully made a reservation!");
                 viewReservation(guest);
-                Console.WriteLine("Amount due: ${0} (Not paid after discount)\n", price);
+                //Console.WriteLine("Amount due: ${0} (Not paid after discount)\n", price);
             }
             else
             {
@@ -415,7 +413,7 @@ namespace SEAssignment
             if (id.Reservation.ReservationPayment.TransactionSuccessStatus == false)
             {
                 Console.WriteLine("");
-                Console.WriteLine("Payment $" + id.Reservation.ReservationPayment.PaymentAmt.ToString("0.00") + " for " + "Guest " + id.Reservation.GuestId + ", " + id.Reservation.Room + ", " + id.Reservation.CheckInDate + ", " + id.Reservation.CheckOutDate);
+                Console.WriteLine("Payment $" + id.Reservation.ReservationPayment.PaymentDue.ToString("0.00") + " for " + "Guest " + id.Reservation.GuestId + ", " + id.Reservation.Room + ", " + id.Reservation.CheckInDate + ", " + id.Reservation.CheckOutDate);
 
                 Console.WriteLine("Do you have a voucher [Yes/No]");
                 Console.WriteLine("[Yes] - \"Yes\"");
@@ -583,6 +581,7 @@ namespace SEAssignment
             Console.WriteLine("Hotel location: " + guest.Reservation.Room.Hotel.Location);
             Console.WriteLine("Hotel type: " + guest.Reservation.Room.Hotel.HotelType);
             Console.WriteLine("Room type: " + guest.Reservation.Room.RoomType);
+            Console.WriteLine("Room cost per night: ${0}", guest.Reservation.Room.Cost);
             Console.WriteLine("Bed type: " + guest.Reservation.Room.BedType);
             Console.WriteLine("Check-in date: " + guest.Reservation.CheckInDate);
             Console.WriteLine("Check-out date: " + guest.Reservation.CheckOutDate);
@@ -605,7 +604,7 @@ namespace SEAssignment
             }              
             else
             {
-                Console.WriteLine("Amount due: ${0} (Not paid)", Math.Round(guest.Reservation.ReservationPayment.PaymentDue, 2));
+                Console.WriteLine("Amount due: ${0} (Not paid) (Discounts included)", Math.Round(guest.Reservation.ReservationPayment.PaymentDue, 2));
             }
             Console.WriteLine("Reservation status: {0}", guest.Reservation.ReservationStatus);
         }

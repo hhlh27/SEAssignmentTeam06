@@ -39,7 +39,28 @@ namespace SEAssignment
                 }
                 else
                 {
-                    return Reservation.Room.Cost * (Reservation.CheckOutDate - Reservation.CheckInDate).TotalDays;
+                    if (PaymentMethod == "credit card")
+                    {
+                        if (VoucherUsed == null)
+                        {
+                            return (Reservation.Room.Cost * (Reservation.CheckOutDate - Reservation.CheckInDate).TotalDays) * 0.8;
+                        }
+                        else
+                        {
+                            return ((Reservation.Room.Cost * (Reservation.CheckOutDate - Reservation.CheckInDate).TotalDays) * 0.8) * VoucherUsed.VoucherDiscount;
+                        }
+                    }
+                    else
+                    {
+                        if (VoucherUsed == null)
+                        {
+                            return Reservation.Room.Cost * (Reservation.CheckOutDate - Reservation.CheckInDate).TotalDays;
+                        }
+                        else
+                        {
+                            return (Reservation.Room.Cost * (Reservation.CheckOutDate - Reservation.CheckInDate).TotalDays) * VoucherUsed.VoucherDiscount;
+                        }
+                    }           
                 }
             }
         }
@@ -53,7 +74,7 @@ namespace SEAssignment
                 }
                 else
                 {
-                    return Reservation.Room.Cost * (Reservation.CheckOutDate - Reservation.CheckInDate).TotalDays;
+                    return PaymentDue;
                 }
             }
         }
