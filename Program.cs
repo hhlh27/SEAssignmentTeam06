@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace SEAssignment
@@ -14,6 +15,7 @@ namespace SEAssignment
         public static void Main(string[] args)
         {
             Guest guest = new Guest();
+            Guest guest2 = new Guest();
             HotelCollection hotelCollection = new HotelCollection();
             hotelCollection[0] = new Hotel(1, "Grand Hyatt Singapore", "10 Scotts Rd", "City", true, 4);
             hotelCollection[1] = new Hotel(2, "Budget A Hotel", "123 Geylang Road", "Budget", false, 2);
@@ -21,6 +23,7 @@ namespace SEAssignment
             hotelCollection[3] = new Hotel(4, "Luxury C Hotel", "113 Orchard Road", "Luxury", true, 5);
             Hotel h = new Hotel(3, "Grand Hyatt Singapore", "10 Scotts Rd", "Citf5btny Hotel", true, 4);
             Room room = new Room(1, h, "Deluxe", "Queen", true, 2, 150.00, "Reserved");
+            Room room2 = new Room(2, h, "Luxury", "Single", true, 2, 300.00, "Reserved");
             List<Voucher> voucherList = new List<Voucher>();
             Voucher voucher1 = new Voucher("v99887", 30);
             Voucher voucher2 = new Voucher("v11294", 12);
@@ -40,9 +43,17 @@ namespace SEAssignment
                 TransactionSuccessStatus = true
             };
 
+            ReservationPayment reservationPayment2 = new ReservationPayment
+            {
+                Guest = guest2,
+                TransactionSuccessStatus = false
+            };
 
+            guest2.AccountBalance = 150;
             guest.Reservation = new Reservation(1, 1, room, DateTime.Now.AddDays(3), DateTime.Now.AddDays(4), "Confirmed", reservationPayment, new Cancellation());
+            guest2.Reservation = new Reservation(2, 2, room2, DateTime.Now.AddDays(4), DateTime.Now.AddDays(6), "Awaiting Payment", reservationPayment2, new Cancellation());
             reservationPayment.Reservation = guest.Reservation;
+            reservationPayment2.Reservation = guest2.Reservation;
             Reservation r1 = new Reservation(1, 1, room, new DateTime(2022, 10, 1, 7, 0, 0), new DateTime(2022, 10, 10, 7, 0, 0), "Fulfilled", reservationPayment, null);
             Reservation r2 = new Reservation(2, 1, room, new DateTime(2022, 11, 5, 7, 0, 0), new DateTime(2022, 11, 22, 5, 0, 0), "Fulfilled", reservationPayment, null);
             Reservation r3 = new Reservation(3, 1, room, new DateTime(2022, 12, 10, 7, 0, 0), new DateTime(2022, 12, 17, 7, 0, 0), "Fulfilled", reservationPayment, null);
@@ -62,7 +73,7 @@ namespace SEAssignment
                         Console.WriteLine("---- Sign in/Register ---- " +
                             "\n1. Sign in (Have existing account)\n" +
                             "2. Sign up (No existing account)\n" +
-                            "3. Register guesst (For ICA Personnel");
+                            "3. Register guest (For ICA Personnel)");
                         Console.Write("Enter an option: ");
                         string accInput = Console.ReadLine();
                         if (accInput == "1")
@@ -108,7 +119,7 @@ namespace SEAssignment
                         }
                         break;
                     case "6":
-                        makePayment(voucherList,guest);
+                        makePayment(voucherList,guest2);
 
                         break;
                     case "7":
@@ -143,7 +154,7 @@ namespace SEAssignment
             List<Room> roomList = new List<Room>
             {
                 new Room(1, h1, "Deluxe", "Queen", true, 2, 150.00, "Reserved"),
-               new Room(2, h1, "Regular", "King", true, 2, 100.00, "Available")
+                new Room(2, h1, "Regular", "King", true, 2, 100.00, "Available")
             };
 
             //prompt user to select hotel and room
@@ -203,7 +214,7 @@ namespace SEAssignment
             Console.WriteLine("Total Cost: " + price);
 
             //prompt user to confirm and create reservation
-            Console.Write("Confrim Submit (y/n): ");
+            Console.Write("Confirm Submit (y/n): ");
             var respond = Console.ReadLine();
             if(respond == "y")
             {
@@ -262,7 +273,7 @@ namespace SEAssignment
 
         private static void registerGuest()
         {
-            //implement Guest Account use case(Juliana)
+            //implement Register Guest use case(Juliana)
             Console.WriteLine("----Register Guest----");
 
         }
@@ -411,21 +422,24 @@ namespace SEAssignment
         private static void makePayment(List<Voucher> voucherList, Guest id)
         {
             //implement vouchers use case (Lay How)
-            
             if (id.Reservation.ReservationPayment.TransactionSuccessStatus == false)
             {
                 Console.WriteLine("");
-                Console.WriteLine("Payment $" + id.Reservation.ReservationPayment.PaymentAmt.ToString("0.00") + " for " + "Guest " + id.Reservation.GuestId + ", " + id.Reservation.Room + ", " + id.Reservation.CheckInDate + ", " + id.Reservation.CheckOutDate);
+                Console.WriteLine("Payment $" + id.Reservation.ReservationPayment.PaymentDue.ToString("0.00") + " for " + "Guest " + id.Reservation.GuestId + ", " + id.Reservation.Room + ", Check-in: " + id.Reservation.CheckInDate + ", Check-out: " + id.Reservation.CheckOutDate);
 
                 Console.WriteLine("Do you have a voucher [Yes/No]");
                 Console.WriteLine("[Yes] - \"Yes\"");
-                Console.WriteLine("[No] - anything else");
+                Console.WriteLine("[No] - \"No\"");
+                Console.WriteLine("[Exit] - anything else");
 
                 string reply = Console.ReadLine();
 
                 bool found = false;
                 bool run1 = false;
+                bool run2 = false;
 
+                int y = 0;
+                double paymentPrice = id.Reservation.ReservationPayment.PaymentDue;
                 while (run1 == false)
                 {
                     if (reply == "Yes")
@@ -434,17 +448,20 @@ namespace SEAssignment
                         string voucherId = Console.ReadLine();
                         for (int i = 0; i < voucherList.Count(); i++)
                         {
-                            if (voucherId == "v" + voucherList[i].VoucherId)
+                            if (voucherId == voucherList[i].VoucherId)
                             {
-                                var voucherApplied = new Voucher();
-                                voucherApplied = voucherList[i];
+                                y = i;
                                 found = true;
                             }
                         }
 
                         if (found == true)
                         {
-                            Console.WriteLine("Voucher applied.");
+                            int discount = voucherList[y].VoucherDiscount;
+                            double percent = (double)(100-discount) / (double)100;
+                            paymentPrice = percent * id.Reservation.ReservationPayment.PaymentDue;
+                            Console.WriteLine("Voucher applied - " + voucherList[y].VoucherDiscount + "% off.");
+                            Console.WriteLine("New reservation payment: $" + (percent * id.Reservation.ReservationPayment.PaymentDue).ToString("0.00"));
                             run1 = true;
                         }
                         else
@@ -453,8 +470,8 @@ namespace SEAssignment
                             Console.WriteLine("Re-enter voucher code? [Yes/No]");
 
                             Console.WriteLine("[Yes] - \"Yes\"");
-                            Console.WriteLine("[No] - anything else");
-
+                            Console.WriteLine("[No] - \"No\"");
+                            Console.WriteLine("[Exit] - anything else");
                             string reply1 = Console.ReadLine();
 
                             if (reply1 == "Yes")
@@ -467,19 +484,193 @@ namespace SEAssignment
                             }
                         }
                     }
-                    else
+                    else if (reply == "No")
                     {
-                        Console.WriteLine("");
+                        while (run2 == false)
+                        {
+                            Console.WriteLine("");
+                            Console.WriteLine("Payment Methods");
+                            Console.WriteLine("[1] Account Balance" + "($" + id.AccountBalance.ToString("0.00") + " available)");
+                            Console.WriteLine("[2] Credit Card");
+                            Console.WriteLine("[anything else] Leave");
+
+                            Console.WriteLine("Choose payment method:");
+                            string choice = Console.ReadLine();
+
+                            if (choice == "1")
+                            {
+                                if (id.AccountBalance >= paymentPrice)
+                                {
+                                    id.AccountBalance = id.AccountBalance - paymentPrice;
+                                    paymentPrice = 0;
+                                    Console.WriteLine("You have fully paid for the reservation. New account balance: " + id.AccountBalance.ToString("0.00"));
+                                    id.Reservation.ReservationPayment.TransactionSuccessStatus = true;
+                                    id.Reservation.ReservationPayment.PaymentMethod = "Account Balance";
+                                    if (found == true)
+                                    {
+                                        Console.WriteLine("You have also used Voucher " + voucherList[y].VoucherId);
+                                        id.Reservation.ReservationPayment.VoucherUsed = voucherList[y];
+                                    }
+                                    run2 = true;
+                                }
+                                else
+                                {
+                                    paymentPrice = paymentPrice - id.AccountBalance;
+                                    id.AccountBalance = 0;
+                                    Console.WriteLine("You have fully used up your account balance. Remaining payment due: $" + paymentPrice.ToString("0.00"));
+
+                                    Console.WriteLine("Continue paying by credit card.");
+                                    Console.WriteLine("Enter credit card credentials below or \"EXIT\" to Exit: (_ _ _ _  _ _ _ _  _ _ _ _  _ _ _ _) ");
+                                    string creditCard = Console.ReadLine();
+
+                                    while (creditCard.Length != 19)
+                                    {
+                                        if (creditCard == "EXIT")
+                                        {
+                                            Console.WriteLine("You have exited program.");
+                                            System.Environment.Exit(0);
+                                        }
+                                    }
+                                    if (creditCard.Length == 19)
+                                    {
+                                        Console.WriteLine("Payment by credit card done successfully.");
+                                        id.Reservation.ReservationPayment.TransactionSuccessStatus = true;
+                                        id.Reservation.ReservationPayment.PaymentMethod = "Credit Card";
+                                        paymentPrice = 0;
+                                        System.Environment.Exit(0);
+                                    }
+                                }
+                            }
+                            else if (choice == "2")
+                            {
+                                Console.WriteLine("Enter credit card credentials below or \"EXIT\" to Exit: (_ _ _ _  _ _ _ _  _ _ _ _  _ _ _ _) ");
+                                string creditCard = Console.ReadLine();
+
+                                while (creditCard.Length != 19)
+                                {
+                                    if (creditCard == "EXIT")
+                                    {
+                                        Console.WriteLine("You have exited payment.");
+                                        System.Environment.Exit(0);
+                                    }
+                                }
+                                if (creditCard.Length == 19)
+                                {
+                                    Console.WriteLine("Payment by credit card done successfully.");
+                                    id.Reservation.ReservationPayment.TransactionSuccessStatus = true;
+                                    id.Reservation.ReservationPayment.PaymentMethod = "Credit Card";
+                                    paymentPrice = 0;
+                                    System.Environment.Exit(0);
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Sequence exited.");
+                                System.Environment.Exit(0);
+                            }
+
+                        }
+                    }
+                    else 
+                    {
+                        Console.WriteLine("Sequence exited.");
+                        System.Environment.Exit(0);
                     }
                 }
 
-                Console.WriteLine("Next...");
+                bool run3 = false;
+
+                while (run3 == false)
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine("Payment Methods");
+                    Console.WriteLine("[1] Account Balance" + "($" + id.AccountBalance.ToString("0.00") + " available)");
+                    Console.WriteLine("[2] Credit Card");
+                    Console.WriteLine("[anything else] Leave");
+
+                    Console.WriteLine("Choose payment method:");
+                    string choice = Console.ReadLine();
+
+                    if (choice == "1")
+                    {
+                        if (id.AccountBalance >= paymentPrice)
+                        {
+                            id.AccountBalance = id.AccountBalance - paymentPrice;
+                            paymentPrice = 0;
+                            Console.WriteLine("You have fully paid for the reservation. New account balance: " + id.AccountBalance.ToString("0.00"));
+                            id.Reservation.ReservationPayment.TransactionSuccessStatus = true;
+                            id.Reservation.ReservationPayment.PaymentMethod = "Account Balance";
+                            if (found == true)
+                            {
+                                Console.WriteLine("You have also used Voucher " + voucherList[y].VoucherId);
+                                id.Reservation.ReservationPayment.VoucherUsed = voucherList[y];
+                            }
+                            run2 = true;
+                        }
+                        else
+                        {
+                            paymentPrice = paymentPrice - id.AccountBalance;
+                            id.AccountBalance = 0;
+                            Console.WriteLine("You have fully used up your account balance. Remaining payment due: $" + paymentPrice.ToString("0.00"));
+                          
+                            Console.WriteLine("Continue paying by credit card.");
+                            Console.WriteLine("Enter credit card credentials below or \"EXIT\" to Exit: (_ _ _ _  _ _ _ _  _ _ _ _  _ _ _ _) ");
+                            string creditCard = Console.ReadLine();
+
+                            while (creditCard.Length != 19 )
+                            {
+                                if (creditCard == "EXIT")
+                                {
+                                    Console.WriteLine("You have exited program.");
+                                    System.Environment.Exit(0);
+                                }
+                            }
+                            if (creditCard.Length == 19 )
+                            {
+                                Console.WriteLine("Payment by credit card done successfully.");
+                                id.Reservation.ReservationPayment.TransactionSuccessStatus = true;
+                                id.Reservation.ReservationPayment.PaymentMethod = "Credit Card";
+                                paymentPrice = 0;
+                                System.Environment.Exit(0);
+                            }
+                        }
+                    }
+                    else if (choice == "2")
+                    {
+                        Console.WriteLine("Enter credit card credentials below or \"EXIT\" to Exit: (_ _ _ _  _ _ _ _  _ _ _ _  _ _ _ _) ");
+                        string creditCard = Console.ReadLine();
+
+                        while (creditCard.Length != 19)
+                        {
+                            if (creditCard == "EXIT")
+                            {
+                                Console.WriteLine("You have exited payment.");
+                                System.Environment.Exit(0);
+                            }
+                        }
+                        if (creditCard.Length == 19)
+                        {
+                            Console.WriteLine("Payment by credit card done successfully.");
+                            id.Reservation.ReservationPayment.TransactionSuccessStatus = true;
+                            id.Reservation.ReservationPayment.PaymentMethod = "Credit Card";
+                            paymentPrice = 0;
+                            System.Environment.Exit(0);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Sequence exited.");
+                        System.Environment.Exit(0);
+                    }
+
+                }
             }
             else
             {
                 Console.WriteLine("No payment needs to be made.");
+                System.Environment.Exit(0);
             }
-            
+
         }
 
         private static void cancelReservation(Guest guest)
@@ -542,7 +733,7 @@ namespace SEAssignment
         {
             Console.WriteLine("");
             Console.WriteLine("-----BookHoliStay Menu-------");
-            Console.WriteLine("1. Sign/Register");
+            Console.WriteLine("1. Sign in/Register");
             Console.WriteLine("2. View All Hotels (Vouchers Accepted)");
             Console.WriteLine("3. View Hotel Details");
             Console.WriteLine("4. Make a reservation ");
