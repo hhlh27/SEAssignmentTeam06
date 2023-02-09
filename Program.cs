@@ -84,7 +84,7 @@ namespace SEAssignment
                         }
                         break;
                     case "6":
-                        useVoucher();
+                        makePayment(voucherList,guest);
 
                         break;
                     case "7":
@@ -383,7 +383,7 @@ namespace SEAssignment
         }
     
 
-        private static void useVoucher()
+        private static void makePayment(List<Voucher> voucherList, Guest id)
         {
             //implement vouchers use case (Lay How)
 
