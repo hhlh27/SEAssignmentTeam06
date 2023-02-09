@@ -21,6 +21,7 @@ namespace SEAssignment
             hotelCollection[3] = new Hotel(4, "Luxury C Hotel", "113 Orchard Road", "Luxury", true, 5);
             Hotel h = new Hotel(3, "Grand Hyatt Singapore", "10 Scotts Rd", "City Hotel", true, 4);
             Room room = new Room(1, h, "Deluxe", "Queen", true, 2, 150.00, "Reserved");
+           
             ReservationPayment reservationPayment = new ReservationPayment
             {
                 Guest = guest,
@@ -29,7 +30,13 @@ namespace SEAssignment
             };
             guest.Reservation = new Reservation(1, 1, room, DateTime.Now.AddDays(3), DateTime.Now.AddDays(4), "Confirmed", reservationPayment, new Cancellation());
             reservationPayment.Reservation = guest.Reservation;
-
+            Reservation r1 = new Reservation(1, 1, room, new DateTime(2022, 10, 1, 7, 0, 0), new DateTime(2022, 10, 10, 7, 0, 0), "Fulfilled", reservationPayment, null);
+            Reservation r2 = new Reservation(2, 1, room, new DateTime(2022, 11, 5, 7, 0, 0), new DateTime(2022, 11, 22, 5, 0, 0), "Fulfilled", reservationPayment, null);
+            Reservation r3 = new Reservation(3, 1, room, new DateTime(2022, 12, 10, 7, 0, 0), new DateTime(2022, 12, 17, 7, 0, 0), "Fulfilled", reservationPayment, null);
+            List <Reservation> fulfilledReservationList = new List<Reservation>();
+            fulfilledReservationList.Add(r1);
+            fulfilledReservationList.Add(r2);
+            fulfilledReservationList.Add(r3);
             while (true)
             {
                 displayMenu();
@@ -70,7 +77,7 @@ namespace SEAssignment
 
                         break;
                     case "7":
-                        rateHotel(h,guest);
+                        rateHotel(fulfilledReservationList,h,guest);
 
                         break;
                     case "8":
@@ -201,7 +208,7 @@ namespace SEAssignment
         private static void viewAllHotelsAcceptVouchers(HotelCollection hc)
 
         {
-            //implement view hotels using iterator design patter(Hannnah)
+            //implement view hotels using iterator design patter(Hannah)
             IIterator i = hc.CreateIterator();
             Console.WriteLine("Displaying All Hotels that accept Vouchers:");
 
@@ -224,14 +231,31 @@ namespace SEAssignment
             Console.WriteLine("Guest Account");
         }
 
-        private static Rating rateHotel(Hotel h, Guest guest)
+        private static Rating rateHotel(List<Reservation> frList,Hotel h, Guest guest)
         {
             //implement Ratings use case (Hannah)
             int starRating = 0;
             bool ratingIsValid = false;
             string sRating = "";
             Console.WriteLine("----Rate Hotel---- ");
-            
+            foreach (Reservation reservation in frList)
+            {
+                Console.WriteLine("Reservation ID: " + reservation.ReservationId);
+                Console.WriteLine("Check In Date: " + reservation.CheckInDate);
+                Console.WriteLine("Check Out Date: " + reservation.CheckOutDate);
+                Console.WriteLine("Reservation Status: " + reservation.ReservationStatus);
+                Console.WriteLine();
+            }
+            Console.Write("Enter reservation ID to rate hotel: ");
+            string idInput = Console.ReadLine();
+            bool idIsValid = validateIdInput(frList, idInput);
+            while (!idIsValid)
+            {
+                Console.WriteLine("Invalid input.");
+                Console.Write("Enter a valid reservation ID : ");
+                idInput = Console.ReadLine();
+                idIsValid = validateIdInput(frList, idInput);
+            }
             Console.WriteLine("Hotel Details: ");
             Console.WriteLine("Hotel Name: " + h.HotelName);
             Console.WriteLine("Hotel Address: " + h.Location);
@@ -248,24 +272,85 @@ namespace SEAssignment
             }
             
             starRating = Int32.Parse(rating);
-            Console.Write("Enter your feedback:  ");
-            string feedback = Console.ReadLine();
-            string ratingState = "submitted a review";
-            Rating r = new Rating(1, starRating, feedback, h);
-            Console.WriteLine("Rating submitted successfully.\n");
-            h.addRating(r);
-            // (Caleb) I added rating to the guest's rating list
-            guest.addRating(r);
-            // Regiser observer
-            // Admin that observes rating
-            var sysAdmin = new SystemAdmin();
-            sysAdmin.LoginEmail = "abc@gmail.com";
-            sysAdmin.LoginPassword = "123";
-            sysAdmin.Name = "John";
-            r.RegisterObserver(sysAdmin);
-            r.RatingState = ratingState;
+            Console.Write("Would you like to input a feedback of the hotel? (y/n): ");
+            string input = Console.ReadLine();
+            input.ToLower();
+            bool isValid = validateYNInput(input);
+            while (!isValid)
+            {
+                Console.WriteLine("Invalid input.");
+                Console.Write("Enter a valid option (Y/N): ");
+                input = Console.ReadLine();
+                input.ToLower();
+                isValid = validateYNInput(input);
+            }
+            if (input == "y")
+            {
+                Console.Write("Enter your feedback:  ");
+                string feedback = Console.ReadLine();
+                string ratingState = "submitted a review";
+                Rating r = new Rating(1, starRating, feedback, h);
+                Console.WriteLine("Rating submitted successfully.\n");
+                h.addRating(r);
+                // (Caleb) I added rating to the guest's rating list
+                guest.addRating(r);
+                // Regiser observer
+                // Admin that observes rating
+                var sysAdmin = new SystemAdmin();
+                sysAdmin.LoginEmail = "abc@gmail.com";
+                sysAdmin.LoginPassword = "123";
+                sysAdmin.Name = "John";
+                r.RegisterObserver(sysAdmin);
+                r.RatingState = ratingState;
+                return r;
+            }
+            else
+            {
+                string feedback = "";
+                string ratingState = "submitted a review";
+                Rating r = new Rating(1, starRating, feedback, h);
+                Console.WriteLine("Rating submitted successfully.\n");
+                h.addRating(r);
+                // (Caleb) I added rating to the guest's rating list
+                guest.addRating(r);
+                // Regiser observer
+                // Admin that observes rating
+                var sysAdmin = new SystemAdmin();
+                sysAdmin.LoginEmail = "abc@gmail.com";
+                sysAdmin.LoginPassword = "123";
+                sysAdmin.Name = "John";
+                r.RegisterObserver(sysAdmin);
+                r.RatingState = ratingState;
+                return r;
+            }
             
-            return r;
+            
+        }
+
+        private static bool validateYNInput(string input)
+        {
+            if (input == "y" || input == "n")
+                return true;
+            else
+                return false;
+        }
+
+        private static bool validateIdInput(List<Reservation> frList, string? idInput)
+        {
+            int numericValue;
+            bool isNumber = int.TryParse(idInput, out numericValue);
+            if (isNumber)
+            {
+                int userInput = Int32.Parse(idInput);
+                if (userInput > 0 && userInput <= frList.Count() && isNumber)
+                {
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+                return false;
         }
 
         private static bool validateStarRating(string? starRating)
@@ -295,7 +380,7 @@ namespace SEAssignment
             Console.WriteLine("Do you have a voucher [Yes/No]");
             Console.WriteLine("[Yes] - \"Yes\"");
             Console.WriteLine("[No] - anything else");
-
+                   
             reply = Console.ReadLine();
 
             bool found = false;
