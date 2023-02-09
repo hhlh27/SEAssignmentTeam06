@@ -57,9 +57,31 @@ namespace SEAssignment
                 {
                     // Add different cases and print statements depending on the user's input
                     case "1":
-                        manageGuestAccount();
-
+                        Console.WriteLine("---- Sign in/Register ---- " +
+                            "\n1. Sign in (Have existing account)\n" +
+                            "2. Sign up (No existing account)\n" +
+                            "3. Register guesst (For ICA Personnel");
+                        Console.Write("Enter an option: ");
+                        string accInput = Console.ReadLine();
+                        if (accInput == "1")
+                        {
+                            Console.WriteLine("Signed in successfully. Welcome back to BookHoliStay!\n");
+                        }
+                        else if (accInput == "2")
+                        {
+                            Console.WriteLine("Signed up successfully. Welcome to BookHoliStay!\n");
+                        }
+                        else if (accInput == "3")
+                        {
+                            Console.WriteLine();
+                            registerGuest();
+                        }
+                        else
+                        {
+                            displayMenu();
+                        }
                         break;
+
                     case "2":
                         viewAllHotelsAcceptVouchers(hotelCollection);
 
@@ -236,10 +258,11 @@ namespace SEAssignment
         }
       
 
-        private static void manageGuestAccount()
+        private static void registerGuest()
         {
             //implement Guest Account use case(Juliana)
-            Console.WriteLine("Guest Account");
+            Console.WriteLine("----Register Guest----");
+
         }
 
         private static Rating rateHotel(List<Reservation> frList,Hotel h, Guest guest)
@@ -509,7 +532,7 @@ namespace SEAssignment
         {
             Console.WriteLine("");
             Console.WriteLine("-----BookHoliStay Menu-------");
-            Console.WriteLine("1. Manage Guest Account ");
+            Console.WriteLine("1. Sign/Register");
             Console.WriteLine("2. View All Hotels (Vouchers Accepted)");
             Console.WriteLine("3. View Hotel Details");
             Console.WriteLine("4. Make a reservation ");
