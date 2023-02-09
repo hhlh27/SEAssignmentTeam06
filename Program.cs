@@ -19,7 +19,7 @@ namespace SEAssignment
             hotelCollection[1] = new Hotel(2, "Budget A Hotel", "123 Geylang Road", "Budget", false, 2);
             hotelCollection[2] = new Hotel(3, "Family B Hotel", "223 Avenue Road", "Family-friendly", true, 3);
             hotelCollection[3] = new Hotel(4, "Luxury C Hotel", "113 Orchard Road", "Luxury", true, 5);
-            Hotel h = new Hotel(3, "Grand Hyatt Singapore", "10 Scotts Rd", "City Hotel", true, 4);
+            Hotel h = new Hotel(3, "Grand Hyatt Singapore", "10 Scotts Rd", "Citf5btny Hotel", true, 4);
             Room room = new Room(1, h, "Deluxe", "Queen", true, 2, 150.00, "Reserved");
             List<Voucher> voucherList = new List<Voucher>();
             Voucher voucher1 = new Voucher("v99887", 30);
@@ -39,6 +39,8 @@ namespace SEAssignment
                 VoucherUsed = voucher3,
                 TransactionSuccessStatus = true
             };
+
+
             guest.Reservation = new Reservation(1, 1, room, DateTime.Now.AddDays(3), DateTime.Now.AddDays(4), "Confirmed", reservationPayment, new Cancellation());
             reservationPayment.Reservation = guest.Reservation;
             Reservation r1 = new Reservation(1, 1, room, new DateTime(2022, 10, 1, 7, 0, 0), new DateTime(2022, 10, 10, 7, 0, 0), "Fulfilled", reservationPayment, null);
@@ -386,67 +388,75 @@ namespace SEAssignment
         private static void makePayment(List<Voucher> voucherList, Guest id)
         {
             //implement vouchers use case (Lay How)
-
-            Console.WriteLine("");
-            Console.WriteLine("Payment " + id.Reservation.ReservationPayment.PaymentAmt + " for " + "Guest " + id.Reservation.GuestId + ", " + id.Reservation.Room + ", " + id.Reservation.CheckInDate + ", " + id.Reservation.CheckOutDate);
-
-            Console.WriteLine("Do you have a voucher [Yes/No]");
-            Console.WriteLine("[Yes] - \"Yes\"");
-            Console.WriteLine("[No] - anything else");
-
-            string reply = Console.ReadLine();
-
-            bool found = false;
-            bool run1 = false;
-
-            while (run1 == false)
+            
+            if (id.Reservation.ReservationPayment.TransactionSuccessStatus == false)
             {
-                if (reply == "Yes")
+                Console.WriteLine("");
+                Console.WriteLine("Payment $" + id.Reservation.ReservationPayment.PaymentAmt.ToString("0.00") + " for " + "Guest " + id.Reservation.GuestId + ", " + id.Reservation.Room + ", " + id.Reservation.CheckInDate + ", " + id.Reservation.CheckOutDate);
+
+                Console.WriteLine("Do you have a voucher [Yes/No]");
+                Console.WriteLine("[Yes] - \"Yes\"");
+                Console.WriteLine("[No] - anything else");
+
+                string reply = Console.ReadLine();
+
+                bool found = false;
+                bool run1 = false;
+
+                while (run1 == false)
                 {
-                    Console.WriteLine("Enter voucher code:");
-                    string voucherId = Console.ReadLine();
-                    for (int i = 0; i < voucherList.Count(); i++)
+                    if (reply == "Yes")
                     {
-                        if (voucherId == "v" + voucherList[i].VoucherId)
+                        Console.WriteLine("Enter voucher code:");
+                        string voucherId = Console.ReadLine();
+                        for (int i = 0; i < voucherList.Count(); i++)
                         {
-                            var voucherApplied = new Voucher();
-                            voucherApplied = voucherList[i];
-                            found = true;
+                            if (voucherId == "v" + voucherList[i].VoucherId)
+                            {
+                                var voucherApplied = new Voucher();
+                                voucherApplied = voucherList[i];
+                                found = true;
+                            }
                         }
-                    }
 
-                    if (found == true)
-                    {
-                        Console.WriteLine("Voucher applied.");
-                        run1 = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Voucher not found.");
-                        Console.WriteLine("Re-enter voucher code? [Yes/No]");
-
-                        Console.WriteLine("[Yes] - \"Yes\"");
-                        Console.WriteLine("[No] - anything else");
-
-                        string reply1 = Console.ReadLine();
-
-                        if (reply1 == "Yes")
+                        if (found == true)
                         {
-                            run1 = false;
+                            Console.WriteLine("Voucher applied.");
+                            run1 = true;
                         }
                         else
                         {
-                            run1 = true;
+                            Console.WriteLine("Voucher not found.");
+                            Console.WriteLine("Re-enter voucher code? [Yes/No]");
+
+                            Console.WriteLine("[Yes] - \"Yes\"");
+                            Console.WriteLine("[No] - anything else");
+
+                            string reply1 = Console.ReadLine();
+
+                            if (reply1 == "Yes")
+                            {
+                                run1 = false;
+                            }
+                            else
+                            {
+                                run1 = true;
+                            }
                         }
                     }
+                    else
+                    {
+                        Console.WriteLine("");
+                    }
                 }
-                else
-                {
-                    Console.WriteLine("");
-                }
-            }
 
-            Console.WriteLine("Next...");
+                Console.WriteLine("Next...");
+            }
+            else
+            {
+                Console.WriteLine("No payment needs to be made.");
+            }
+            
         }
 
         private static void cancelReservation(Guest guest)
@@ -514,7 +524,7 @@ namespace SEAssignment
             Console.WriteLine("3. View Hotel Details");
             Console.WriteLine("4. Make a reservation ");
             Console.WriteLine("5. Cancel a Reservation");
-            Console.WriteLine("6. Manage Vouchers");
+            Console.WriteLine("6. Make Payment");
             Console.WriteLine("7. Rate Hotel");
             Console.WriteLine("8. Update Rating");
             //check in state
