@@ -39,27 +39,13 @@ namespace SEAssignment
                 }
                 else
                 {
-                    if (PaymentMethod == "credit card")
+                    if (PaymentMethod == "Credit Card")
                     {
-                        if (VoucherUsed == null)
-                        {
-                            return (Reservation.Room.Cost * (Reservation.CheckOutDate - Reservation.CheckInDate).TotalDays) * 0.8;
-                        }
-                        else
-                        {
-                            return ((Reservation.Room.Cost * (Reservation.CheckOutDate - Reservation.CheckInDate).TotalDays) * 0.8) * VoucherUsed.VoucherDiscount;
-                        }
+                        return (Guest.Reservation.Room.Cost * (Guest.Reservation.CheckOutDate - Guest.Reservation.CheckInDate).TotalDays) * 0.8;
                     }
                     else
                     {
-                        if (VoucherUsed == null)
-                        {
-                            return Reservation.Room.Cost * (Reservation.CheckOutDate - Reservation.CheckInDate).TotalDays;
-                        }
-                        else
-                        {
-                            return (Reservation.Room.Cost * (Reservation.CheckOutDate - Reservation.CheckInDate).TotalDays) * VoucherUsed.VoucherDiscount;
-                        }
+                        return Guest.Reservation.Room.Cost * (Guest.Reservation.CheckOutDate - Guest.Reservation.CheckInDate).TotalDays;
                     }           
                 }
             }
@@ -74,7 +60,14 @@ namespace SEAssignment
                 }
                 else
                 {
-                    return PaymentDue;
+                    if (PaymentMethod == "Credit Card")
+                    {
+                        return (Guest.Reservation.Room.Cost * (Guest.Reservation.CheckOutDate - Guest.Reservation.CheckInDate).TotalDays) * 0.8;
+                    }
+                    else
+                    {
+                        return Guest.Reservation.Room.Cost * (Guest.Reservation.CheckOutDate - Guest.Reservation.CheckInDate).TotalDays;
+                    }
                 }
             }
         }

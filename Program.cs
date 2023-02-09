@@ -52,13 +52,15 @@ namespace SEAssignment
                 TransactionSuccessStatus = false
             };
 
+            guest2.AccountBalance = 150;
             guest.Reservation = new Reservation(1, 1, room, DateTime.Now.AddDays(3), DateTime.Now.AddDays(4), "Confirmed", reservationPayment, new Cancellation());
+            guest2.Reservation = new Reservation(2, 2, room2, DateTime.Now.AddDays(4), DateTime.Now.AddDays(6), "Awaiting Payment", reservationPayment2, new Cancellation());
             reservationPayment.Reservation = guest.Reservation;
             reservationPayment2.Reservation = guest2.Reservation;
             Reservation r1 = new Reservation(1, 1, room, new DateTime(2022, 10, 1, 7, 0, 0), new DateTime(2022, 10, 10, 7, 0, 0), "Fulfilled", reservationPayment, null);
             Reservation r2 = new Reservation(2, 1, room, new DateTime(2022, 11, 5, 7, 0, 0), new DateTime(2022, 11, 22, 5, 0, 0), "Fulfilled", reservationPayment, null);
             Reservation r3 = new Reservation(3, 1, room, new DateTime(2022, 12, 10, 7, 0, 0), new DateTime(2022, 12, 17, 7, 0, 0), "Fulfilled", reservationPayment, null);
-            List <Reservation> fulfilledReservationList = new List<Reservation>();
+            List<Reservation> fulfilledReservationList = new List<Reservation>();
             fulfilledReservationList.Add(r1);
             fulfilledReservationList.Add(r2);
             fulfilledReservationList.Add(r3);
@@ -220,7 +222,7 @@ namespace SEAssignment
                 // Since payment has not been made, payment properties such as TransactionId, TransactionSuccessStatus are not set
                 reservationPayment.Reservation = r;
                 reservationPayment.Guest = guest;
-                reservationPayment.PaymentMethod = "credit card";
+                reservationPayment.PaymentMethod = "Credit Card";
 
                 // Setting reservation to guest's reservation object
                 guest.Reservation = r;
