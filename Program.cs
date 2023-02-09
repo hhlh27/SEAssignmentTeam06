@@ -275,6 +275,37 @@ namespace SEAssignment
         {
             //implement Register Guest use case(Juliana)
             Console.WriteLine("----Register Guest----");
+            Guest guest = new Guest();
+
+            //prompt user to enter name
+            Console.Write("\nEnter Name: ");
+            var name = Console.ReadLine();
+            if (string.IsNullOrEmpty(name))
+            {
+                Console.WriteLine("Name can't be empty! Enter name once more");
+                name = Console.ReadLine();
+            }
+            guest.Name = name;
+
+            //prompt user to enter personal id
+            Console.Write("\nEnter Personal ID: ");
+            var id = Console.ReadLine();
+            guest.PersonalId = id;
+            //prompt user to enter contact number
+            Console.Write("\nEnter Contact Number: ");
+            var num = Console.ReadLine();
+            guest.ContactNum = Convert.ToInt32(num);
+
+            //prompt user to enter email
+            Console.Write("\nEnter Email: ");
+            var email = Console.ReadLine();
+            guest.LoginEmail = email;
+
+            //prompt user to enter password
+            Console.Write("\nEnter Password: ");
+            var password = Console.ReadLine();
+            guest.LoginPassword = password;
+        }
 
         }
 
