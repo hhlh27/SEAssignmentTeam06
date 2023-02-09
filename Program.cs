@@ -307,8 +307,6 @@ namespace SEAssignment
             guest.LoginPassword = password;
         }
 
-        }
-
         private static Rating rateHotel(List<Reservation> frList,Hotel h, Guest guest)
         {
             //implement Ratings use case (Hannah)
