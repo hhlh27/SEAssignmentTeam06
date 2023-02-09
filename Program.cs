@@ -487,6 +487,7 @@ namespace SEAssignment
                     if (guest.Reservation.ReservationStatus == "Cancelled")
                     {
                         Console.WriteLine("This reservation has already been cancelled.\n");
+                        exit = true;
                     }
                     else
                     {
