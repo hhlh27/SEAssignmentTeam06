@@ -46,6 +46,11 @@ namespace SEAssignment
                 TransactionSuccessStatus = true
             };
 
+            ReservationPayment reservationPayment2 = new ReservationPayment
+            {
+                Guest = guest2,
+                TransactionSuccessStatus = false
+            };
 
             guest.Reservation = new Reservation(1, 1, room, DateTime.Now.AddDays(3), DateTime.Now.AddDays(4), "Confirmed", reservationPayment, new Cancellation());
             reservationPayment.Reservation = guest.Reservation;
