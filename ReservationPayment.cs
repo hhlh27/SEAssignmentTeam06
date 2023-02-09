@@ -41,11 +41,27 @@ namespace SEAssignment
                 {
                     if (PaymentMethod == "Credit Card")
                     {
-                        return (Guest.Reservation.Room.Cost * (Guest.Reservation.CheckOutDate - Guest.Reservation.CheckInDate).TotalDays) * 0.8;
+                        if (Guest.Reservation.ReservationPayment.VoucherUsed != null)
+                        {
+                            double percent = (double)(100 - Guest.Reservation.ReservationPayment.VoucherUsed.VoucherDiscount) / (double)100;
+                            return ((Guest.Reservation.Room.Cost * (Guest.Reservation.CheckOutDate - Guest.Reservation.CheckInDate).TotalDays) * 0.8) * percent;
+                        }
+                        else
+                        {
+                            return (Guest.Reservation.Room.Cost * (Guest.Reservation.CheckOutDate - Guest.Reservation.CheckInDate).TotalDays) * 0.8;
+                        }                       
                     }
                     else
                     {
-                        return Guest.Reservation.Room.Cost * (Guest.Reservation.CheckOutDate - Guest.Reservation.CheckInDate).TotalDays;
+                        if (Guest.Reservation.ReservationPayment.VoucherUsed != null)
+                        {
+                            double percent = (double)(100 - Guest.Reservation.ReservationPayment.VoucherUsed.VoucherDiscount) / (double)100;
+                            return (Guest.Reservation.Room.Cost * (Guest.Reservation.CheckOutDate - Guest.Reservation.CheckInDate).TotalDays) * percent;
+                        }
+                        else
+                        {
+                            return Guest.Reservation.Room.Cost * (Guest.Reservation.CheckOutDate - Guest.Reservation.CheckInDate).TotalDays;
+                        }
                     }           
                 }
             }
@@ -62,11 +78,27 @@ namespace SEAssignment
                 {
                     if (PaymentMethod == "Credit Card")
                     {
-                        return (Guest.Reservation.Room.Cost * (Guest.Reservation.CheckOutDate - Guest.Reservation.CheckInDate).TotalDays) * 0.8;
+                        if (Guest.Reservation.ReservationPayment.VoucherUsed != null)
+                        {
+                            double percent = (double)(100 - Guest.Reservation.ReservationPayment.VoucherUsed.VoucherDiscount) / (double)100;
+                            return ((Guest.Reservation.Room.Cost * (Guest.Reservation.CheckOutDate - Guest.Reservation.CheckInDate).TotalDays) * 0.8) * percent;
+                        }
+                        else
+                        {
+                            return (Guest.Reservation.Room.Cost * (Guest.Reservation.CheckOutDate - Guest.Reservation.CheckInDate).TotalDays) * 0.8;
+                        }
                     }
                     else
                     {
-                        return Guest.Reservation.Room.Cost * (Guest.Reservation.CheckOutDate - Guest.Reservation.CheckInDate).TotalDays;
+                        if (Guest.Reservation.ReservationPayment.VoucherUsed != null)
+                        {
+                            double percent = (double)(100 - Guest.Reservation.ReservationPayment.VoucherUsed.VoucherDiscount) / (double)100;
+                            return (Guest.Reservation.Room.Cost * (Guest.Reservation.CheckOutDate - Guest.Reservation.CheckInDate).TotalDays) * percent;
+                        }
+                        else
+                        {
+                            return Guest.Reservation.Room.Cost * (Guest.Reservation.CheckOutDate - Guest.Reservation.CheckInDate).TotalDays;
+                        }
                     }
                 }
             }

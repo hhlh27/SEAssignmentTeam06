@@ -772,14 +772,14 @@ namespace SEAssignment
                             if (guest.Reservation.ReservationPayment.TransactionSuccessStatus)
                             {
                                 guest.AccountBalance += guest.Reservation.ReservationPayment.PaymentAmt;
-                                Console.WriteLine("${0} has been credited back to your account!", Math.Round(guest.Reservation.ReservationPayment.PaymentAmt, 2));
-                                Console.WriteLine("Your new account balance: ${0}\n", Math.Round(guest.AccountBalance, 2));
+                                Console.WriteLine("${0} has been credited back to your account!", Math.Round(guest.Reservation.ReservationPayment.PaymentAmt, 2).ToString("0.00"));
+                                Console.WriteLine("Your new account balance: ${0}\n", Math.Round(guest.AccountBalance, 2).ToString("0.00"));
 
                             }
                             if (guest.Reservation.ReservationPayment.VoucherUsed != null)
                             {
                                 guest.addVoucher(guest.Reservation.ReservationPayment.VoucherUsed);
-                                Console.WriteLine("Your voucher {0} with a discount of {1} has been stored back in your account.\n",
+                                Console.WriteLine("Your voucher {0} with a discount of {1}% has been stored back in your account.\n",
                                     guest.Reservation.ReservationPayment.VoucherUsed.VoucherId,
                                     guest.Reservation.ReservationPayment.VoucherUsed.VoucherDiscount);
                             }
@@ -844,30 +844,34 @@ namespace SEAssignment
             Console.WriteLine("Hotel location: " + guest.Reservation.Room.Hotel.Location);
             Console.WriteLine("Hotel type: " + guest.Reservation.Room.Hotel.HotelType);
             Console.WriteLine("Room type: " + guest.Reservation.Room.RoomType);
-            Console.WriteLine("Room cost per night: ${0}", guest.Reservation.Room.Cost);
+            Console.WriteLine("Room cost per night: ${0}", guest.Reservation.Room.Cost.ToString("0.00"));
             Console.WriteLine("Bed type: " + guest.Reservation.Room.BedType);
             Console.WriteLine("Check-in date: " + guest.Reservation.CheckInDate);
             Console.WriteLine("Check-out date: " + guest.Reservation.CheckOutDate);
+            if (guest.Reservation.ReservationPayment.VoucherUsed != null)
+            {
+                Console.WriteLine("Voucher discount: {0}%", guest.Reservation.ReservationPayment.VoucherUsed.VoucherDiscount);
+            }
             if (guest.Reservation.ReservationPayment.TransactionSuccessStatus == true)
             {
                 if (guest.Reservation.ReservationStatus == "Cancelled")
                 {
                     Console.WriteLine("Amount due: ${0} (Refunded ${1} on {2})", 
-                        Math.Round(guest.Reservation.ReservationPayment.PaymentDue, 2), 
-                        Math.Round(guest.Reservation.Cancellation.AmtRefunded, 2), 
+                        Math.Round(guest.Reservation.ReservationPayment.PaymentDue, 2).ToString("0.00"), 
+                        Math.Round(guest.Reservation.Cancellation.AmtRefunded, 2).ToString("0.00"), 
                         guest.Reservation.Cancellation.CancellationDate);
                 }
                 else
                 {
                     Console.WriteLine("Amount due: ${0} (Fully paid ${1} on {2})", 
-                        Math.Round(guest.Reservation.ReservationPayment.PaymentDue, 2), 
-                        Math.Round(guest.Reservation.ReservationPayment.PaymentAmt, 2), 
+                        Math.Round(guest.Reservation.ReservationPayment.PaymentDue, 2).ToString("0.00"), 
+                        Math.Round(guest.Reservation.ReservationPayment.PaymentAmt, 2).ToString("0.00"), 
                         guest.Reservation.ReservationPayment.DatePaid);
                 }
             }              
             else
             {
-                Console.WriteLine("Amount due: ${0} (Not paid) (Discounts included)", Math.Round(guest.Reservation.ReservationPayment.PaymentDue, 2));
+                Console.WriteLine("Amount due: ${0} (Not paid) (Discounts included)", Math.Round(guest.Reservation.ReservationPayment.PaymentDue, 2).ToString("0.00"));
             }
             Console.WriteLine("Reservation status: {0}", guest.Reservation.ReservationStatus);
         }
