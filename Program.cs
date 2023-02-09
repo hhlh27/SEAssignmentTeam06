@@ -16,6 +16,9 @@ namespace SEAssignment
         {
             Guest guest = new Guest();
             Guest guest2 = new Guest();
+            List<Guest> guestList = new List<Guest>();
+            guestList.Add(guest);
+            guestList.Add(guest2);
             HotelCollection hotelCollection = new HotelCollection();
             hotelCollection[0] = new Hotel(1, "Grand Hyatt Singapore", "10 Scotts Rd", "City", true, 4);
             hotelCollection[1] = new Hotel(2, "Budget A Hotel", "123 Geylang Road", "Budget", false, 2);
@@ -70,10 +73,9 @@ namespace SEAssignment
                 {
                     // Add different cases and print statements depending on the user's input
                     case "1":
-                        Console.WriteLine("---- Sign in/Register ---- " +
+                        Console.WriteLine("---- Sign in/Sign up ---- " +
                             "\n1. Sign in (Have existing account)\n" +
-                            "2. Sign up (No existing account)\n" +
-                            "3. Register guest (For ICA Personnel)");
+                            "2. Sign up (No existing account)");
                         Console.Write("Enter an option: ");
                         string accInput = Console.ReadLine();
                         if (accInput == "1")
@@ -82,12 +84,8 @@ namespace SEAssignment
                         }
                         else if (accInput == "2")
                         {
-                            Console.WriteLine("Signed up successfully. Welcome to BookHoliStay!\n");
-                        }
-                        else if (accInput == "3")
-                        {
-                            Console.WriteLine();
-                            registerGuest();
+                            guestList.Add(signUp(guestList));
+                            Console.WriteLine("\nGreat! Signed up successfully. Welcome to BookHoliStay!");
                         }
                         else
                         {
@@ -271,18 +269,19 @@ namespace SEAssignment
         }
       
 
-        private static void registerGuest()
+        private static Guest signUp(List<Guest> guestList)
         {
-            //implement Register Guest use case(Juliana)
-            Console.WriteLine("----Register Guest----");
+            //implement Sign Up use case(Juliana)
+            Console.WriteLine("----Sign Up----");
             Guest guest = new Guest();
 
             //prompt user to enter name
-            Console.Write("\nEnter Name: ");
+            Console.Write("Enter Name: ");
             var name = Console.ReadLine();
-            if (string.IsNullOrEmpty(name))
+
+            while (string.IsNullOrEmpty(name))
             {
-                Console.WriteLine("Name can't be empty! Enter name once more");
+                Console.Write("Name can't be empty! Enter name once more: ");
                 name = Console.ReadLine();
             }
             guest.Name = name;
@@ -290,21 +289,61 @@ namespace SEAssignment
             //prompt user to enter personal id
             Console.Write("\nEnter Personal ID: ");
             var id = Console.ReadLine();
+            while (string.IsNullOrEmpty(id))
+            {
+                Console.Write("Personal ID can't be empty! Enter Personal ID once more: ");
+                id = Console.ReadLine();
+            }
+            for (int i = 0; i < guestList.Count(); i++)
+            {
+                while (id == guestList[i].PersonalId)
+                {
+                    Console.Write("Personal ID already exists! Enter Personal ID once more: ");
+                    id = Console.ReadLine();
+                }
+            }
             guest.PersonalId = id;
+
             //prompt user to enter contact number
             Console.Write("\nEnter Contact Number: ");
             var num = Console.ReadLine();
+            while (string.IsNullOrEmpty(num))
+            {
+                Console.Write("Contact Number can't be empty! Enter Contact Number once more: ");
+                num = Console.ReadLine();
+            }
             guest.ContactNum = Convert.ToInt32(num);
 
             //prompt user to enter email
             Console.Write("\nEnter Email: ");
             var email = Console.ReadLine();
+            while (string.IsNullOrEmpty(email))
+            {
+                Console.Write("Email can't be empty! Enter Email once more: ");
+                email = Console.ReadLine();
+            }
+            for (int i = 0; i < guestList.Count(); i++)
+            {
+                while (email == guestList[i].LoginEmail)
+                {
+                    Console.Write("Email already exists! Enter email once more: ");
+                    email = Console.ReadLine();
+                }
+            }
             guest.LoginEmail = email;
 
             //prompt user to enter password
             Console.Write("\nEnter Password: ");
             var password = Console.ReadLine();
+            while (string.IsNullOrEmpty(password))
+            {
+                Console.Write("Password can't be empty! Enter Password once more: ");
+                password = Console.ReadLine();
+            }
             guest.LoginPassword = password;
+
+            return guest;
+            
         }
 
         private static Rating rateHotel(List<Reservation> frList,Hotel h, Guest guest)
@@ -582,6 +621,7 @@ namespace SEAssignment
                                         Console.WriteLine("You have exited payment.");
                                         System.Environment.Exit(0);
                                     }
+                                   
                                 }
                                 if (creditCard.Length == 19)
                                 {
@@ -784,10 +824,10 @@ namespace SEAssignment
         {
             Console.WriteLine("");
             Console.WriteLine("-----BookHoliStay Menu-------");
-            Console.WriteLine("1. Sign in/Register");
+            Console.WriteLine("1. Sign in/Sign up");
             Console.WriteLine("2. View All Hotels (Vouchers Accepted)");
             Console.WriteLine("3. View Hotel Details");
-            Console.WriteLine("4. Make a reservation ");
+            Console.WriteLine("4. Make a Reservation ");
             Console.WriteLine("5. Cancel a Reservation");
             Console.WriteLine("6. Make Payment");
             Console.WriteLine("7. Rate Hotel");
