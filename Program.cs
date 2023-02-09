@@ -324,9 +324,9 @@ namespace SEAssignment
             {
                 Console.Write("Enter your feedback:  ");
                 string feedback = Console.ReadLine();
-                string ratingState = "submitted a review";
+                string ratingState = "submitted a star rating and review";
                 Rating r = new Rating(1, starRating, feedback, h);
-                Console.WriteLine("Rating submitted successfully.\n");
+                Console.WriteLine("Rating and review submitted successfully.\n");
                 h.addRating(r);
                 // (Caleb) I added rating to the guest's rating list
                 guest.addRating(r);
@@ -343,7 +343,7 @@ namespace SEAssignment
             else
             {
                 string feedback = "";
-                string ratingState = "submitted a review";
+                string ratingState = "submitted a star rating";
                 Rating r = new Rating(1, starRating, feedback, h);
                 Console.WriteLine("Rating submitted successfully.\n");
                 h.addRating(r);
