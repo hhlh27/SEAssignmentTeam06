@@ -21,11 +21,22 @@ namespace SEAssignment
             hotelCollection[3] = new Hotel(4, "Luxury C Hotel", "113 Orchard Road", "Luxury", true, 5);
             Hotel h = new Hotel(3, "Grand Hyatt Singapore", "10 Scotts Rd", "City Hotel", true, 4);
             Room room = new Room(1, h, "Deluxe", "Queen", true, 2, 150.00, "Reserved");
-           
+            List<Voucher> voucherList = new List<Voucher>();
+            Voucher voucher1 = new Voucher("v99887", 30);
+            Voucher voucher2 = new Voucher("v11294", 12);
+            Voucher voucher3 = new Voucher("v12345", 15);
+            Voucher voucher4 = new Voucher("v55141", 20);
+            Voucher voucher5 = new Voucher("v34567", 25);
+            voucherList.Add(voucher1);
+            voucherList.Add(voucher2);
+            voucherList.Add(voucher3);
+            voucherList.Add(voucher4);
+            voucherList.Add(voucher5);
+
             ReservationPayment reservationPayment = new ReservationPayment
             {
                 Guest = guest,
-                VoucherUsed = new Voucher("v12345", "15%"),
+                VoucherUsed = voucher3,
                 TransactionSuccessStatus = true
             };
             guest.Reservation = new Reservation(1, 1, room, DateTime.Now.AddDays(3), DateTime.Now.AddDays(4), "Confirmed", reservationPayment, new Cancellation());
@@ -375,13 +386,15 @@ namespace SEAssignment
         private static void useVoucher()
         {
             //implement vouchers use case (Lay How)
-            Console.WriteLine("Vouchers");
+
+            Console.WriteLine("");
+            Console.WriteLine("Payment " + id.Reservation.ReservationPayment.PaymentAmt + " for " + "Guest " + id.Reservation.GuestId + ", " + id.Reservation.Room + ", " + id.Reservation.CheckInDate + ", " + id.Reservation.CheckOutDate);
 
             Console.WriteLine("Do you have a voucher [Yes/No]");
             Console.WriteLine("[Yes] - \"Yes\"");
             Console.WriteLine("[No] - anything else");
-                   
-            reply = Console.ReadLine();
+
+            string reply = Console.ReadLine();
 
             bool found = false;
             bool run1 = false;
@@ -390,11 +403,11 @@ namespace SEAssignment
             {
                 if (reply == "Yes")
                 {
-                    Console.WriteLine("Enter voucher code");
-                    voucherId = Console.ReadLine();
+                    Console.WriteLine("Enter voucher code:");
+                    string voucherId = Console.ReadLine();
                     for (int i = 0; i < voucherList.Count(); i++)
                     {
-                        if (voucherId == voucherList[i].voucherId)
+                        if (voucherId == "v" + voucherList[i].VoucherId)
                         {
                             var voucherApplied = new Voucher();
                             voucherApplied = voucherList[i];
@@ -415,17 +428,21 @@ namespace SEAssignment
                         Console.WriteLine("[Yes] - \"Yes\"");
                         Console.WriteLine("[No] - anything else");
 
-                        reply1 = Console.ReadLine();
+                        string reply1 = Console.ReadLine();
 
                         if (reply1 == "Yes")
                         {
-                            run1 = true;
+                            run1 = false;
                         }
                         else
                         {
-                            run1 = false;
+                            run1 = true;
                         }
                     }
+                }
+                else
+                {
+                    Console.WriteLine("");
                 }
             }
 
