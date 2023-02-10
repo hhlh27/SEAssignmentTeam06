@@ -272,17 +272,16 @@ namespace SEAssignment
         private static void viewAllHotelsAcceptVouchers(HotelCollection hc)
 
         {
-            //implement view hotels using iterator design patter(Hannah)
+            //implement view hotels that accept vouchers using iterator design patter(Hannah)
             IIterator i = hc.CreateIterator();
             Console.WriteLine("Displaying All Hotels that accept Vouchers:");
-
 
             for (Hotel item = (Hotel)i.First();
                    !i.IsDone; item = (Hotel)i.Next())
             {
                 if (item.IsVouchersAllowed==true)
-                    Console.WriteLine("Hotel Name: "+item.HotelName+", Address: "+item.Location+ ", Type:"+item.HotelType);
-                //Console.WriteLine(item.Location);
+                    Console.WriteLine("Hotel Name: "+item.HotelName+", Address: "+item.Location+ ", Type:"+item.HotelType +", Vouchers allowed? "+ item.IsVouchersAllowed);
+               
             }
 
 
