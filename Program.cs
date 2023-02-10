@@ -38,7 +38,13 @@ namespace SEAssignment
             voucherList.Add(voucher3);
             voucherList.Add(voucher4);
             voucherList.Add(voucher5);
-
+            List<Hotel> hotelList = new List<Hotel>
+            {
+               new Hotel(1, "Grand Hyatt Singapore", "10 Scotts Rd", "City", true, 4),
+               new Hotel(2, "Budget A Hotel", "123 Geylang Road", "Budget", false, 2),
+               new Hotel(3, "Family B Hotel", "223 Avenue Road", "Family-friendly", true, 3),
+               new Hotel(4, "Luxury C Hotel", "113 Orchard Road", "Luxury", true, 5)
+            };
             ReservationPayment reservationPayment = new ReservationPayment
             {
                 Guest = guest,
@@ -94,12 +100,13 @@ namespace SEAssignment
                         break;
 
                     case "2":
-                        viewAllHotelsAcceptVouchers(hotelCollection);
+                        viewAllHotels(hotelList);
+                        
 
                         break;
                     case "3":
-                        viewHotelDetails();
-
+                        
+                        viewAllHotelsAcceptVouchers(hotelCollection);
                         break;
                     case "4":
                         makeReservation(guest, h);
@@ -136,7 +143,19 @@ namespace SEAssignment
 
         }
 
-       
+        private static void viewAllHotels(List<Hotel> hotelList)
+        {
+            Console.WriteLine("---Displayng all hotels---");
+            foreach(Hotel hotel in hotelList)
+            {
+                Console.WriteLine("Hotel Name: "+ hotel.HotelName);
+                Console.WriteLine("Hotel Type: "+hotel.HotelType);
+                Console.WriteLine("Location: "+hotel.Location);
+                Console.WriteLine("Vouchers allowed? "+hotel.IsVouchersAllowed);
+                Console.WriteLine("");
+            }
+        }
+
         private static void makeReservation(Guest guest, Hotel h1)
         {
             //available hotel
@@ -826,8 +845,8 @@ namespace SEAssignment
             Console.WriteLine("");
             Console.WriteLine("-----BookHoliStay Menu-------");
             Console.WriteLine("1. Sign in/Sign up");
-            Console.WriteLine("2. View All Hotels (Vouchers Accepted)");
-            Console.WriteLine("3. View Hotel Details");
+            Console.WriteLine("2. View All Hotels ");
+            Console.WriteLine("3. View All Hotels (Vouchers Accepted)");
             Console.WriteLine("4. Make a Reservation ");
             Console.WriteLine("5. Cancel a Reservation");
             Console.WriteLine("6. Make Payment");
