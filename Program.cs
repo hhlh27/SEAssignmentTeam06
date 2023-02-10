@@ -14,7 +14,7 @@ namespace SEAssignment
        
         public static void Main(string[] args)
         {
-            // Regiser observer
+            // Register observer
             // Admin that observes rating
             var sysAdmin = new SystemAdmin();
             sysAdmin.LoginEmail = "abc@gmail.com";
@@ -373,7 +373,7 @@ namespace SEAssignment
 
         private static Rating rateHotel(List<Reservation> frList,Hotel h, Guest guest, SystemAdmin sysAdmin)
         {
-            //implement Ratings use case (Hannah)
+            //implementation of rate hotel use case (Hannah)
             int starRating = 0;
             bool ratingIsValid = false;
             string sRating = "";
@@ -455,6 +455,7 @@ namespace SEAssignment
 
         private static bool validateYNInput(string input)
         {
+            //validation of y/n input for rate hotel use case (Hannah)
             if (input == "y" || input == "n")
                 return true;
             else
@@ -463,6 +464,7 @@ namespace SEAssignment
 
         private static bool validateIdInput(List<Reservation> frList, string? idInput)
         {
+            //validation of reservation id input for rate hotel use case (Hannah)
             int numericValue;
             bool isNumber = int.TryParse(idInput, out numericValue);
             if (isNumber)
@@ -481,6 +483,7 @@ namespace SEAssignment
 
         private static bool validateStarRating(string? starRating)
         {
+            //validation of star rating input for rate hotel use case (Hannah)
             int numericValue;
             bool isNumber = int.TryParse(starRating, out numericValue);
             if (isNumber)
@@ -838,7 +841,6 @@ namespace SEAssignment
             Console.WriteLine("6. Make Payment");
             Console.WriteLine("7. Rate Hotel");
             Console.WriteLine("8. Update Rating");
-            //check in state
            
         }
 
