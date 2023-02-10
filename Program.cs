@@ -11,9 +11,15 @@ namespace SEAssignment
     public class Program
     {
         
-        // Wait for user
+       
         public static void Main(string[] args)
         {
+            // Regiser observer
+            // Admin that observes rating
+            var sysAdmin = new SystemAdmin();
+            sysAdmin.LoginEmail = "abc@gmail.com";
+            sysAdmin.LoginPassword = "123";
+            sysAdmin.Name = "John";
             Guest guest = new Guest();
             Guest guest2 = new Guest();
             List<Guest> guestList = new List<Guest>();
@@ -24,9 +30,9 @@ namespace SEAssignment
             hotelCollection[1] = new Hotel(2, "Budget A Hotel", "123 Geylang Road", "Budget", false, 2);
             hotelCollection[2] = new Hotel(3, "Family B Hotel", "223 Avenue Road", "Family-friendly", true, 3);
             hotelCollection[3] = new Hotel(4, "Luxury C Hotel", "113 Orchard Road", "Luxury", true, 5);
-            Hotel h = new Hotel(3, "Grand Hyatt Singapore", "10 Scotts Rd", "Citf5btny Hotel", true, 4);
-            Room room = new Room(1, h, "Deluxe", "Queen", true, 2, 150.00, "Reserved");
-            Room room2 = new Room(2, h, "Luxury", "Single", true, 2, 300.00, "Reserved");
+            Hotel hotel = new Hotel(3, "Grand Hyatt Singapore", "10 Scotts Rd", "City Hotel", true, 4);
+            Room room = new Room(1, hotel, "Deluxe", "Queen", true, 2, 150.00, "Reserved");
+            Room room2 = new Room(2, hotel, "Luxury", "Single", true, 2, 300.00, "Reserved");
             List<Voucher> voucherList = new List<Voucher>();
             Voucher voucher1 = new Voucher("v99887", 30);
             Voucher voucher2 = new Voucher("v11294", 12);
@@ -109,7 +115,7 @@ namespace SEAssignment
                         viewAllHotelsAcceptVouchers(hotelCollection);
                         break;
                     case "4":
-                        makeReservation(guest, h);
+                        makeReservation(guest, hotel);
                         break;
 
                     case "5":
@@ -128,7 +134,7 @@ namespace SEAssignment
 
                         break;
                     case "7":
-                        rateHotel(fulfilledReservationList,h,guest);
+                        rateHotel(fulfilledReservationList,hotel,guest,sysAdmin);
 
                         break;
                     case "8":
@@ -365,7 +371,7 @@ namespace SEAssignment
             
         }
 
-        private static Rating rateHotel(List<Reservation> frList,Hotel h, Guest guest)
+        private static Rating rateHotel(List<Reservation> frList,Hotel h, Guest guest, SystemAdmin sysAdmin)
         {
             //implement Ratings use case (Hannah)
             int starRating = 0;
@@ -425,15 +431,8 @@ namespace SEAssignment
                 string ratingState = "submitted a star rating and review";
                 Rating r = new Rating(1, starRating, feedback, h);
                 Console.WriteLine("Rating and review submitted successfully.\n");
-                h.addRating(r);
-                // (Caleb) I added rating to the guest's rating list
-                guest.addRating(r);
-                // Regiser observer
-                // Admin that observes rating
-                var sysAdmin = new SystemAdmin();
-                sysAdmin.LoginEmail = "abc@gmail.com";
-                sysAdmin.LoginPassword = "123";
-                sysAdmin.Name = "John";
+                h.addRating(r);           
+                guest.addRating(r);           
                 r.RegisterObserver(sysAdmin);
                 r.RatingState = ratingState;
                 return r;
@@ -445,14 +444,7 @@ namespace SEAssignment
                 Rating r = new Rating(1, starRating, feedback, h);
                 Console.WriteLine("Rating submitted successfully.\n");
                 h.addRating(r);
-                // (Caleb) I added rating to the guest's rating list
-                guest.addRating(r);
-                // Regiser observer
-                // Admin that observes rating
-                var sysAdmin = new SystemAdmin();
-                sysAdmin.LoginEmail = "abc@gmail.com";
-                sysAdmin.LoginPassword = "123";
-                sysAdmin.Name = "John";
+                guest.addRating(r);            
                 r.RegisterObserver(sysAdmin);
                 r.RatingState = ratingState;
                 return r;
@@ -494,7 +486,7 @@ namespace SEAssignment
             if (isNumber)
             {
                 int sRating = Int32.Parse(starRating);
-                if (sRating >= 0 && sRating <= 5 && isNumber)
+                if (sRating > 0 && sRating <= 5 && isNumber)
                 {
                     return true;
                 }
@@ -833,12 +825,7 @@ namespace SEAssignment
             }
         }
 
-        private static void viewHotelDetails()
-        {
-            //implement hotel details use case (Xuan Qing)
-            throw new NotImplementedException();
-        }
-
+      
         private static void displayMenu()
         {
             Console.WriteLine("");
