@@ -23,6 +23,7 @@ namespace SEAssignment
             set
             {
                 _ratingState = value;
+                // Notify observers when RatingState is changed
                 NotifyObservers();
             }
         }
@@ -40,11 +41,13 @@ namespace SEAssignment
 
         public void RegisterObserver(IObserver observer)
         {
+            // Add an observer to the Rating's observers list
             _observers.Add(observer);
         }
 
         public void RemoveObserver(IObserver observer)
         {
+            // Remove an observer from the Rating's observers list
             _observers.Remove(observer);
         }
 
@@ -52,6 +55,7 @@ namespace SEAssignment
         {
             _observers.ForEach(o =>
             {
+                // Update each observer in the Rating's observer list with the newly updated Rating object
                 o.Update(this);
             });
         }

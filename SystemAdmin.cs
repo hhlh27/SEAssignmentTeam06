@@ -16,6 +16,7 @@ namespace SEAssignment
         // Observer pattern method
         public void Update(Rating rating)
         {
+            // Print administrator's notification about the change in rating's state
             Console.WriteLine(string.Format("*Administrator Notice* A user has {0}. (RatingId: {1})", rating.RatingState, rating.RatingId));
         }
     }
