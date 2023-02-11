@@ -48,5 +48,34 @@ namespace SEAssignment
         {
             this.ReservationStatus = reservationStatus;
         }
+
+        public void makeReservation(Hotel hotel, DateTime checkInDate, DateTime checkOutDate)
+        {
+           //implementation
+        }
+        public void makePayment(double price)
+        {
+            //implementation
+        }
+        public void sendEmail(Reservation reservation)
+        {
+            //implementation
+        }
+        public void contactHotel(Reservation reservation,Hotel hotel)
+        {
+            //implementation
+        }
+        public void checkIn(Reservation reservation)
+        {
+            //implementation
+        }
+        public void rateHotel( Hotel hotel)
+        {
+            //implementation
+        }
+        public void credit(double amount, Voucher voucher, Guest guestAccount)
+        {
+            //implementation
+        }
     }
 }
