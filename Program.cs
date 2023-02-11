@@ -119,14 +119,7 @@ namespace SEAssignment
                         break;
 
                     case "5":
-                        if (guest.Reservation == null)
-                        {
-                            Console.WriteLine("You have no reservations.");
-                        }
-                        else
-                        {
-                            cancelReservation(guest);
-                        }     
+                        cancelReservation(guest);    
                         
                         break;
                     case "6":
@@ -756,94 +749,101 @@ namespace SEAssignment
 
         }
 
-        //implement cancellation use case (Caleb)
+        //implement of cancellation use case (Caleb)
         private static void cancelReservation(Guest guest)
         {
-            // Display guest's reservation       
-            viewReservation(guest);
-            Console.WriteLine();
-            bool exit = false;
-            while (exit == false)
-            {                  
-                // Confirmation prompt
-                Console.Write("Would you like to cancel this reservation? (y/n): ");
-                string userInput = Console.ReadLine();
-                if (userInput == "y")
+            // Checks whether guest has an existing reservation
+            if (guest.Reservation == null)
+            {
+                Console.WriteLine("You have no reservations.");
+            }
+            else
+            {
+                // Display guest's reservation       
+                viewReservation(guest);
+                Console.WriteLine();
+                bool exit = false;
+                while (exit == false)
                 {
-                    // Checks whether guest's reservation has already been cancelled
-                    if (guest.Reservation.ReservationStatus == "Cancelled")
+                    // Confirmation prompt
+                    Console.Write("Would you like to cancel this reservation? (y/n): ");
+                    string userInput = Console.ReadLine();
+                    if (userInput == "y")
                     {
-                        Console.WriteLine("This reservation has already been cancelled.\n");
-                        exit = true;
-                    }
-                    else
-                    {
-                        // Initilize Cancellation object in guest's reservation
-                        Cancellation cancellation = new Cancellation();
-                        guest.Reservation.Cancellation = cancellation;
-
-                        Console.WriteLine();
-
-                        // Check whether current date is at least 2 days before reservation's check-in date
-                        if ((guest.Reservation.CheckInDate - DateTime.Now).TotalDays >= 2)
+                        // Checks whether guest's reservation has already been cancelled
+                        if (guest.Reservation.ReservationStatus == "Cancelled")
                         {
-                            // Check whether guest has already paid for the reservation
-                            if (guest.Reservation.ReservationPayment.TransactionSuccessStatus)
-                            {
-                                // Credits back amount paid back into guest's account
-                                guest.AccountBalance += guest.Reservation.ReservationPayment.PaymentAmt;
-                                Console.WriteLine("${0} has been credited back to your account!", Math.Round(guest.Reservation.ReservationPayment.PaymentAmt, 2).ToString("0.00"));
-                                Console.WriteLine("Your new account balance: ${0}\n", Math.Round(guest.AccountBalance, 2).ToString("0.00"));
-
-                            }
-                            // Check whether guest used a voucher for the reservation
-                            if (guest.Reservation.ReservationPayment.VoucherUsed != null)
-                            {
-                                // Adds voucher used back into guest's account
-                                guest.addVoucher(guest.Reservation.ReservationPayment.VoucherUsed);
-                                Console.WriteLine("Your voucher {0} with a discount of {1}% has been stored back in your account.\n",
-                                    guest.Reservation.ReservationPayment.VoucherUsed.VoucherId,
-                                    guest.Reservation.ReservationPayment.VoucherUsed.VoucherDiscount);
-                            }
-
-                            // Set room status back to "Available"
-                            guest.Reservation.Room.RoomStatus = "Available";
-
-                            // Update reservation status to "Cancelled"
-                            var context = new Context(new Submitted());
-                            string status = context.Request3(guest.Reservation);
-                            guest.Reservation.setReservationStatus(status);
-
-                            // Set values for Cancellation object
-                            guest.Reservation.Cancellation.CancellationId = "Cancelled_" + guest.Reservation.ReservationId.ToString();
-                            // Capturing date of cancellation
-                            guest.Reservation.Cancellation.CancellationDate = DateTime.Now;
-                            guest.Reservation.Cancellation.AmtRefunded = guest.Reservation.ReservationPayment.PaymentAmt;
-
-                            // Print success message
-                            Console.WriteLine("Your reservation has been cancelled!\n");
-
-                            // Display updated reservation
-                            viewReservation(guest);
+                            Console.WriteLine("This reservation has already been cancelled.\n");
                             exit = true;
                         }
                         else
                         {
-                            // Display error message if current date is not at least 2 days before reservation's check-in date
-                            Console.WriteLine("Sorry, your reservation cannot be cancelled as the check-in date is less than 2 days away.\n");
-                            exit = true;
+                            // Initilize Cancellation object in guest's reservation
+                            Cancellation cancellation = new Cancellation();
+                            guest.Reservation.Cancellation = cancellation;
+
+                            Console.WriteLine();
+
+                            // Check whether current date is at least 2 days before reservation's check-in date
+                            if ((guest.Reservation.CheckInDate - DateTime.Now).TotalDays >= 2)
+                            {
+                                // Check whether guest has already paid for the reservation
+                                if (guest.Reservation.ReservationPayment.TransactionSuccessStatus)
+                                {
+                                    // Credits back amount paid back into guest's account
+                                    guest.AccountBalance += guest.Reservation.ReservationPayment.PaymentAmt;
+                                    Console.WriteLine("${0} has been credited back to your account!", Math.Round(guest.Reservation.ReservationPayment.PaymentAmt, 2).ToString("0.00"));
+                                    Console.WriteLine("Your new account balance: ${0}\n", Math.Round(guest.AccountBalance, 2).ToString("0.00"));
+                                }
+                                // Check whether guest used a voucher for the reservation
+                                if (guest.Reservation.ReservationPayment.VoucherUsed != null)
+                                {
+                                    // Adds voucher used back into guest's account
+                                    guest.addVoucher(guest.Reservation.ReservationPayment.VoucherUsed);
+                                    Console.WriteLine("Your voucher {0} with a discount of {1}% has been stored back in your account.\n",
+                                        guest.Reservation.ReservationPayment.VoucherUsed.VoucherId,
+                                        guest.Reservation.ReservationPayment.VoucherUsed.VoucherDiscount);
+                                }
+
+                                // Update room status to "Available"
+                                guest.Reservation.Room.RoomStatus = "Available";
+
+                                // Update reservation status to "Cancelled"
+                                var context = new Context(new Submitted());
+                                string status = context.Request3(guest.Reservation);
+                                guest.Reservation.setReservationStatus(status);
+
+                                // Set values for Cancellation object
+                                guest.Reservation.Cancellation.CancellationId = "Cancelled_" + guest.Reservation.ReservationId.ToString();
+                                // Capturing date of cancellation
+                                guest.Reservation.Cancellation.CancellationDate = DateTime.Now;
+                                guest.Reservation.Cancellation.AmtRefunded = guest.Reservation.ReservationPayment.PaymentAmt;
+
+                                // Print success message
+                                Console.WriteLine("Your reservation has been cancelled!\n");
+
+                                // Display updated reservation
+                                viewReservation(guest);
+                                exit = true;
+                            }
+                            else
+                            {
+                                // Display error message if current date is not at least 2 days before reservation's check-in date
+                                Console.WriteLine("Sorry, your reservation cannot be cancelled as the check-in date is less than 2 days away.");
+                                exit = true;
+                            }
                         }
                     }
-                }
-                // Return user to main menu if user enters "n" for confirmation prompt
-                else if (userInput == "n")
-                {
-                    exit = true;
-                }
-                // Input validation for confirmation prompt
-                else
-                {
-                    Console.WriteLine("Please enter either 'y' or 'n'.");
+                    // Return user to main menu if user enters "n" for confirmation prompt
+                    else if (userInput == "n")
+                    {
+                        exit = true;
+                    }
+                    // Input validation for confirmation prompt
+                    else
+                    {
+                        Console.WriteLine("Please enter either 'y' or 'n'.");
+                    }
                 }
             }
         }
