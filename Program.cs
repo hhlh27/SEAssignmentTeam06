@@ -1,4 +1,17 @@
-﻿using SEAssignment;
+﻿/**
+------------------------------------
+BookHoliStay Hotel Booking System
+Done by Team 6:
+Loh En Ting Hannah S10186258K
+Lim Xuan Qing S10207455A
+Ramos Juliana Charisse S10204975E 
+Choo Jun Le Caleb S10205375H
+Tan Lay How S10206171J
+------------------------------------
+
+**/
+
+using SEAssignment;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,12 +19,11 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 
+
 namespace SEAssignment
 {
     public class Program
     {
-        
-       
         public static void Main(string[] args)
         {
             // Register observer
@@ -144,6 +156,7 @@ namespace SEAssignment
 
         private static void viewAllHotels(List<Hotel> hotelList)
         {
+            //Display all hotels
             Console.WriteLine("---Displayng all hotels---");
             foreach(Hotel hotel in hotelList)
             {
@@ -271,16 +284,17 @@ namespace SEAssignment
         private static void viewAllHotelsAcceptVouchers(HotelCollection hc)
 
         {
-            //implement view hotels that accept vouchers using iterator design patter(Hannah)
+            //implement view hotels that accept vouchers using iterator design pattern(Hannah)
+            //Display a list of hotels that accept vouchers
             IIterator i = hc.CreateIterator();
             Console.WriteLine("Displaying All Hotels that accept Vouchers:");
 
-            for (Hotel item = (Hotel)i.First();
-                   !i.IsDone; item = (Hotel)i.Next())
+            for (Hotel item = (Hotel)i.First();//go to first hotel object in collection
+                   !i.IsDone; item = (Hotel)i.Next())//while last obj has not been reached, go to next obj
             {
-                if (item.IsVouchersAllowed==true)
+                if (item.IsVouchersAllowed==true)//check if attribute IsVouchersAllowed is true
                     Console.WriteLine("Hotel Name: "+item.HotelName+", Address: "+item.Location+ ", Type:"+item.HotelType +", Vouchers allowed? "+ item.IsVouchersAllowed);
-               
+                    //display hotel details
             }
 
 
@@ -371,7 +385,7 @@ namespace SEAssignment
             bool ratingIsValid = false;
             string sRating = "";
             Console.WriteLine("----Rate Hotel---- ");
-            foreach (Reservation reservation in frList)
+            foreach (Reservation reservation in frList)//display a list of reservations
             {
                 Console.WriteLine("Reservation ID: " + reservation.ReservationId);
                 Console.WriteLine("Check In Date: " + reservation.CheckInDate);
@@ -379,54 +393,54 @@ namespace SEAssignment
                 Console.WriteLine("Reservation Status: " + reservation.ReservationStatus);
                 Console.WriteLine();
             }
-            Console.Write("Enter reservation ID to rate hotel: ");
+            Console.Write("Enter reservation ID to rate hotel: ");//prompt user to input reservation id of hotel
             string idInput = Console.ReadLine();
-            bool idIsValid = validateIdInput(frList, idInput);
-            while (!idIsValid)
+            bool idIsValid = validateIdInput(frList, idInput);//validate user input of reservation id
+            while (!idIsValid)//if input is not valid
             {
-                Console.WriteLine("Invalid input.");
-                Console.Write("Enter a valid reservation ID : ");
+                Console.WriteLine("Invalid input.");//display error message
+                Console.Write("Enter a valid reservation ID : ");//prompt user to input again
                 idInput = Console.ReadLine();
                 idIsValid = validateIdInput(frList, idInput);
             }
-            Console.WriteLine("Hotel Details: ");
+            Console.WriteLine("Hotel Details: ");//display hotel details
             Console.WriteLine("Hotel Name: " + h.HotelName);
             Console.WriteLine("Hotel Address: " + h.Location);
             Console.WriteLine("Hotel Type: " + h.HotelType);
-            Console.Write("Enter a Star Rating (1-5): ");
+            Console.Write("Enter a Star Rating (1-5): ");//prompt for input of star rating
             string rating = Console.ReadLine();
-            ratingIsValid = validateStarRating(rating);
-            while (!ratingIsValid)
+            ratingIsValid = validateStarRating(rating);//validate user input of star rating
+            while (!ratingIsValid)//if input is not valid
             {
-                Console.WriteLine("Invalid input.");
-                Console.Write("Enter a Star Rating (1-5): ");
+                Console.WriteLine("Invalid input.");//display error message
+                Console.Write("Enter a Star Rating (1-5): ");//prompt user to input again
                 rating = Console.ReadLine();
                 ratingIsValid = validateStarRating(rating);
             }
             
             starRating = Int32.Parse(rating);
-            Console.Write("Would you like to input a feedback of the hotel? (y/n): ");
+            Console.Write("Would you like to input a feedback of the hotel? (y/n): ");//prompt for user to enter whether to give feedback of hotel
             string input = Console.ReadLine();
             input.ToLower();
-            bool isValid = validateYNInput(input);
-            while (!isValid)
+            bool isValid = validateYNInput(input);//validate user input y/n
+            while (!isValid)//if input is not valid
             {
-                Console.WriteLine("Invalid input.");
-                Console.Write("Enter a valid option (Y/N): ");
+                Console.WriteLine("Invalid input.");//display error message
+                Console.Write("Enter a valid option (Y/N): ");//prompt user to input again
                 input = Console.ReadLine();
                 input.ToLower();
                 isValid = validateYNInput(input);
             }
-            if (input == "y")
+            if (input == "y")//if input is 'y'
             {
-                Console.Write("Enter your feedback:  ");
+                Console.Write("Enter your feedback:  ");//prompt user to enter feedback
                 string feedback = Console.ReadLine();
                 string ratingState = "submitted a star rating and review";
-                Rating r = new Rating(1, starRating, feedback, h);
-                Console.WriteLine("Rating and review submitted successfully.\n");
-                h.addRating(r);           
-                guest.addRating(r);           
-                r.RegisterObserver(sysAdmin);
+                Rating r = new Rating(1, starRating, feedback, h);//create rating object
+                h.addRating(r); //add rating to hotel rating list
+                guest.addRating(r);//add rating to guest rating list
+                Console.WriteLine("Rating and review submitted successfully.\n");//display success message
+                r.RegisterObserver(sysAdmin);//notify obeserver system admin
                 r.RatingState = ratingState;
                 return r;
             }
@@ -434,11 +448,11 @@ namespace SEAssignment
             {
                 string feedback = "";
                 string ratingState = "submitted a star rating";
-                Rating r = new Rating(1, starRating, feedback, h);
-                Console.WriteLine("Rating submitted successfully.\n");
-                h.addRating(r);
-                guest.addRating(r);            
-                r.RegisterObserver(sysAdmin);
+                Rating r = new Rating(1, starRating, feedback, h);   //create rating object            
+                h.addRating(r);//add rating to hotel rating list
+                guest.addRating(r);//add rating to guest rating list
+                Console.WriteLine("Rating submitted successfully.\n");//display success message
+                r.RegisterObserver(sysAdmin);//notify obeserver system admin
                 r.RatingState = ratingState;
                 return r;
             }

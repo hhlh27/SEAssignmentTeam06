@@ -35,7 +35,7 @@ namespace SEAssignment
                 return null;
 
         }
-        // Gets or sets stepsize
+        // Gets or sets step size
         public int Step
         {
             get { return step; }

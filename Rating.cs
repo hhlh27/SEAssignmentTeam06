@@ -60,7 +60,5 @@ namespace SEAssignment
             });
         }
 
-        // public string GetRating() { }
-        // public string GetReview() { }
     }
 }
