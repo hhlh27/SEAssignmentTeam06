@@ -790,6 +790,7 @@ namespace SEAssignment
                             // Check whether guest has already paid for the reservation
                             if (guest.Reservation.ReservationPayment.TransactionSuccessStatus)
                             {
+                                // Credits back amount paid back into guest's account
                                 guest.AccountBalance += guest.Reservation.ReservationPayment.PaymentAmt;
                                 Console.WriteLine("${0} has been credited back to your account!", Math.Round(guest.Reservation.ReservationPayment.PaymentAmt, 2).ToString("0.00"));
                                 Console.WriteLine("Your new account balance: ${0}\n", Math.Round(guest.AccountBalance, 2).ToString("0.00"));
@@ -798,6 +799,7 @@ namespace SEAssignment
                             // Check whether guest used a voucher for the reservation
                             if (guest.Reservation.ReservationPayment.VoucherUsed != null)
                             {
+                                // Adds voucher used back into guest's account
                                 guest.addVoucher(guest.Reservation.ReservationPayment.VoucherUsed);
                                 Console.WriteLine("Your voucher {0} with a discount of {1}% has been stored back in your account.\n",
                                     guest.Reservation.ReservationPayment.VoucherUsed.VoucherId,
@@ -814,6 +816,7 @@ namespace SEAssignment
 
                             // Set values for Cancellation object
                             guest.Reservation.Cancellation.CancellationId = "Cancelled_" + guest.Reservation.ReservationId.ToString();
+                            // Capturing date of cancellation
                             guest.Reservation.Cancellation.CancellationDate = DateTime.Now;
                             guest.Reservation.Cancellation.AmtRefunded = guest.Reservation.ReservationPayment.PaymentAmt;
 
