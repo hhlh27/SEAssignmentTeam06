@@ -56,10 +56,7 @@ namespace SEAssignment
         {
             // implementation
         }
-        //public void giveRating(Rating rating, Review review)
-        //{
-        //    // implementation
-        //}
+      
         public void addVoucher(Voucher voucher)
         {
             vouchersList.Add(voucher);

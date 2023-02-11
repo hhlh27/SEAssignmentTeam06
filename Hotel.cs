@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SEAssignment
-{
+{                    
     public class Hotel
     {
         public int HotelId { get; set; }
@@ -17,6 +17,7 @@ namespace SEAssignment
         public int ReviewScore { get; set; }
 
         private List<Room> roomsList = new List<Room>();
+        private List<string> faciltiesList = new List<string>();
 
         private List<Rating> ratingsList = new List<Rating>();
         public Hotel(int hotelId, string hotelName, string location, string hotelType, bool isVouchersAllowed, int reviewScore)

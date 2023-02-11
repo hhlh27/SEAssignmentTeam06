@@ -38,9 +38,10 @@ namespace SEAssignment
             return true;
         }
 
-        public void searchHotel(double budget, string hotelType, double reviewScore, string location, string facilities)
+        public Hotel searchHotel(double budget, string hotelType, double reviewScore, string location, string facilities)
         {
             //implementation
+            return null;
         }
 
         public void setReservationStatus(string reservationStatus)
