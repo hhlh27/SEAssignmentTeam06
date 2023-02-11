@@ -10,6 +10,7 @@ namespace SEAssignment
     {
         public string VoucherId { get; set; }
         public int VoucherDiscount { get; set; }
+        public ReservationPayment ReservationPayment { get; set; }
 
         public Voucher(string voucherId, int voucherDiscount)
         {

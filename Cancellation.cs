@@ -13,6 +13,7 @@ namespace SEAssignment
         public DateTime CancellationDate { get; set; }
         public double AmtRefunded { get; set; }
 
+        public Reservation Reservation { get; set; }
         public Cancellation(string cancellationId, int reservationId, DateTime cancellationDate, double amtRefund)
         {
             CancellationId = cancellationId;

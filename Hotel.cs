@@ -17,6 +17,7 @@ namespace SEAssignment
         public int ReviewScore { get; set; }
 
         private List<Room> roomsList = new List<Room>();
+        private List<Guest> guestsList = new List<Guest>();
         private List<string> faciltiesList = new List<string>();
 
         private List<Rating> ratingsList = new List<Rating>();

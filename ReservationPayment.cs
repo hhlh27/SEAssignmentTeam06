@@ -11,6 +11,7 @@ namespace SEAssignment
         public Reservation Reservation { get; set; }
         public Guest Guest { get; set; }
         public string TransactionId { get; set; }
+        public IcaPersonnel IcaPersonnel { get; set; }
         public string PaymentMethod { get; set; }
         public bool TransactionSuccessStatus { get; set; }
         public Voucher VoucherUsed { get; set; }

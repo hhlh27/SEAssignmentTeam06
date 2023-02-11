@@ -10,6 +10,7 @@ namespace SEAssignment
     {
         private List<Voucher> vouchersList = new List<Voucher>();
         private List<Rating> ratingsList= new List<Rating>();
+        private List<Reservation> reservationsList = new List<Reservation>();
         public int GuestId { get; set; }
         public string PersonalId { get; set; }
         public int ContactNum { get; set; }

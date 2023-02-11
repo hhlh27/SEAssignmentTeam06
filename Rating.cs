@@ -16,6 +16,7 @@ namespace SEAssignment
         public int StarRating { get; set; }
         public string Review { get; set; }
         public Hotel Hotel { get; set; }
+        public Guest Guest { get; set; }
 
         public string RatingState 
         {

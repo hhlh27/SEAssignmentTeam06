@@ -17,6 +17,7 @@ namespace SEAssignment
         public string ReservationStatus { get; set; }
         public ReservationPayment ReservationPayment { get; set; }
         public Cancellation Cancellation { get; set; }
+        public Guest Guest { get; set; }
 
         public Reservation(int reservationId, int guestId, Room room, DateTime checkInDate, DateTime checkOutDate, string reservationStatus, ReservationPayment reservationPayment, Cancellation cancellation)
         {
@@ -74,6 +75,10 @@ namespace SEAssignment
             //implementation
         }
         public void credit(double amount, Voucher voucher, Guest guestAccount)
+        {
+            //implementation
+        }
+        public void cancel(Reservation reservation)
         {
             //implementation
         }

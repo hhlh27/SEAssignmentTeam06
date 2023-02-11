@@ -8,6 +8,7 @@ namespace SEAssignment
 {
     public class HotelAdmin : Person
     {
+        public Hotel Hotel { get; set; }
         public void GenerateReservationList(string hotelId) { }
         public void ViewMonthlyReports(string hotelId) { }
     }
