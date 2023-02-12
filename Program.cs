@@ -426,7 +426,7 @@ namespace SEAssignment
             while (!isValid)//if input is not valid
             {
                 Console.WriteLine("Invalid input.");//display error message
-                Console.Write("Enter a valid option (Y/N): ");//prompt user to input again
+                Console.Write("Enter a valid option (y/n): ");//prompt user to input again
                 input = Console.ReadLine();
                 input.ToLower();
                 isValid = validateYNInput(input);
